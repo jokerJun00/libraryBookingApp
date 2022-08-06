@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, ScrollView } from 'react-native';
+import { StyleSheet, Text, ScrollView, View } from 'react-native';
 
 
 export default class HomeScreen extends Component {
@@ -9,9 +9,9 @@ export default class HomeScreen extends Component {
   
   render() {
     return(
-      <ScrollView style={styles.container}>
+      <View style={styles.container}>
         <Text>This is Home Screen</Text>
-      </ScrollView>
+      </View>
     );
   }
 }
@@ -19,5 +19,8 @@ export default class HomeScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F9F5EB',
+    justifyContent: 'center',
+    alignItems: 'center',
+    flex: 1,
   }
 })
