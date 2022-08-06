@@ -1,0 +1,1 @@
+This folder mainly use to setup and create cloud connection to the app.
