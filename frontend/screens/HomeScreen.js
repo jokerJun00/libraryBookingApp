@@ -28,7 +28,7 @@ export default class HomeScreen extends Component {
         screenOptions= {styles.drawerScreenOptions}
       >
         <Drawer.Screen
-          name='Home'
+          name='BookList'
           component={BookListScreen}
           options={{
             drawerIcon: ({color}) => (
