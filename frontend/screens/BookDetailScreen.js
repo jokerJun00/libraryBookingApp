@@ -3,226 +3,163 @@ import {
   StyleSheet, 
   Text, 
   View, 
+  ScrollView,
   Image,
   TouchableNativeFeedbackBase, 
   TouchableOpacity,
+  Button,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-date-picker';
 import Dialog, { DialogTitle, DialogFooter, DialogButton, DiaglogContent, DialogContent } from 'react-native-popup-dialog';
 
-// reminder
-// 1. need to develop logic for dialog pop up to display successful / fail message
-//    since the database logic havent develop yet so I did not create the logic.
-//    You can create the logic in "Confirm My Rent" button
-// 2. need to develop logic to create data in database
+// should use this Button for header
+// import BackButton from '../Components/BackButton';
+
+// reminder 
+// 2. modify book detail section
 
 export default class BookDetailScreen extends Component {
   constructor(props) {
     super(props);
-
-    let issueDate = this.formatDate(new Date());
-
-    this.state = {
-      issueDate: issueDate,
-      returnDate: "select date",
-      openPicker: false,
-      openDialog: false,
-      rentSuccess: false,
+    this.state = { 
+      bookTitle: "Rich Dad, Poor Dad",
+      bookAuthor: "Robert Kiyosaki, Sharon Lechter",
+      publisher: "Warner Business Books",
+      status: "Available",
+      bookDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget metus vitae leo venenatis imperdiet pellentesque a urna. Integer gravida sollicitudin risus, ut fringilla erat semper et. Mauris dictum bibendum erat, sed mattis tellus fringilla non. Duis posuere diam convallis ex ullamcorper sollicitudin. Sed rhoncus consectetur est, finibus sollicitudin enim consectetur ut. Donec rhoncus, arcu id mollis maximus, lacus risus egestas libero, ac efficitur lectus nisl et eros. Aenean ultricies augue ac luctus tincidunt. Curabitur eu euismod tortor. Aenean nunc eros, dignissim at pellentesque at, interdum ut sapien. Curabitur blandit neque at nibh placerat, quis venenatis nulla cursus. Nam sit amet vestibulum leo, sed dictum dui. Donec condimentum facilisis faucibus. Donec magna arcu, luctus nec ex ut, lacinia pulvinar lectus. Duis dui quam, tincidunt et commodo ut, tincidunt non purus.",
     }
   }
 
-  // dateObject must be Date() object
-  formatDate = (dateObject) => {
-    let date = dateObject.getDate();
-    let month = dateObject.getMonth() + 1;
-    let year = dateObject.getFullYear();
-    return date + "/" + month + "/" + year;
+  componentDidMount() {
+    this.props.navigation.setOptions({
+      headerShown: true,
+      headerTitle: this.state.bookTitle,
+      headerLeft: () => (
+        <View style={headerStyles.backButton}>
+        <TouchableOpacity
+          onPress={() => this.props.navigation.goBack()}
+        >
+          <Ionicons name='arrow-back-outline' size={35} color='#000'/>
+        </TouchableOpacity>
+      </View>
+      ),
+      headerRight: () => (
+        <View style={headerStyles.rentButton}>
+          <TouchableOpacity
+            onPress={() => this.props.navigation.navigate('Booking')}
+          >
+            <Text style={headerStyles.rentButtonText}>Rent</Text>
+          </TouchableOpacity>
+        </View>
+      )
+    })
   }
 
   render() {
-    // default return date = 1 week after rented
-    let returnDate = new Date();
-    returnDate.setDate(returnDate.getDate() + 7);
-
-    // maximum rent date = 30 days
-    let maximumDate = new Date();
-    maximumDate.setDate(maximumDate.getDate() + 30);
-
     return(
       <View style={styles.container}>
-        {/* return date date picker */}
-        <DatePicker
-          modal
-          mode='date'
-          title={"Select return date"}
-          date={returnDate}
-          minimumDate={new Date()} // minimum date = issue date
-          maximumDate={maximumDate}
-          open={this.state.openPicker}
-          onConfirm={(data) => {
-            let returnDate = this.formatDate(data);
-            
-            this.setState({
-              returnDate: returnDate,
-              openPicker: false,
-            })
-          }}
-          onCancel={() => {
-            this.setState({
-              openPicker: false,
-            });
-          }}
-        />
-
-        {/* diaglog */}
-        <Dialog
-          visible={this.state.openDialog}
-          dialogTitle={
-            <DialogTitle 
-              title={ this.state.rentSuccess ? "You successfully rent the book!" : "Something went wrong!"} 
-            />
-          }
-          footer={
-            <DialogFooter>
-              <DialogButton
-                text="OK"
-                onPress={() => {
-                  this.setState({
-                    openDialog: false,
-                  })
-                }}
-              />
-            </DialogFooter>
-          }
-          onTouchOutside={() => {
-            this.setState({
-              openDialog: false,
-            });
-          }}
-        >
-          <DialogContent>
-            <Text>{
-              this.state.rentSuccess 
-              ? "You action has been record."
-              : "Maximum rent date is 30 days.\nMore than 30 days is not acceptable"
-            }</Text>
-          </DialogContent>
-        </Dialog>
-
-        {/* book image  */}
         <Image
           style={styles.image}
           source={require('../../assets/images/books-images/rich-dad-poor-dad.jpeg')}
         />
 
-        {/* booking detail section */}
-        <View style={styles.bookingDetailSection}>
-          <Text style={styles.bookTitle}>Rich Dad Poor Dad</Text>
-          
-          <View style={{height: 40}}></View>
-
-          {/* issue date */}
-          <View style={styles.dateSection}>
-            <Text style={styles.text}>Issue date:</Text>
-
-            <View style={styles.selectSection}>
-              <Text style={styles.text}>{this.state.issueDate}</Text>
-              <View style={{width: 15}}></View>
-              <Ionicons name='calendar-outline' size={20} />
-            </View>
-          </View>
-
-          <View style={{height: 40}}></View>
-
-          {/* return date  */}
-          <View style={styles.dateSection}>
-            <Text style={styles.text}>Return date:</Text>
-
-            <View style={styles.selectSection}>
-              <Text style={[styles.text, {color: '#1C3879'}]}>{this.state.returnDate}</Text>
-              <View style={{width: 15}}></View>
-              <TouchableOpacity
-                onPress={ () => {
-                  this.setState({
-                    openPicker: true,
-                  })
-                }}
-              >
-                <Ionicons name='calendar-outline' size={20} color={'#1C3879'} />
-              </TouchableOpacity>
-            </View>
-          </View>
-
-          <View style={{height: '20%'}}></View>
-
-          <TouchableOpacity 
-            style={styles.confirmButton}
-            onPress={() => {
-              // develop logic to check if the data create successfully or not here
-              this.setState( {
-                openDialog: true,
-                // rentSuccess: true / false,
-              })
-            }}
-          >
-            <Text style={styles.buttonText}>Confirm My Rent</Text>
-          </TouchableOpacity>
-
+        {/* Book Detail Section */}
+        <View style={styles.detailSection}>
+          <DetailSectionText
+            sectionTitle="Book Title"
+            sectionContent={this.state.bookTitle}
+          />
+          <DetailSectionText
+            sectionTitle="Author" 
+            sectionContent={this.state.bookAuthor}
+          />
+          <DetailSectionText
+            sectionTitle="Publisher"
+            sectionContent={this.state.publisher}
+          />
+          <DetailSectionText
+            sectionTitle="Status"
+            sectionContent={this.state.status}
+          />
         </View>
+
+        <View style={{height: 20}}></View>
+
+        {/* Book Description Section */}
+        <View style={styles.descriptionSection}>
+          <Text>Description: </Text>
+          <View style={{height: 30}}></View>
+          <ScrollView>
+            <Text style={styles.descriptionText}>{this.state.bookDescription}</Text>
+          </ScrollView>
+        </View>
+        
       </View>
     );
   }
 }
 
+class DetailSectionText extends Component {
+  render() {
+    return(
+      <View style={detailSectionTextStyles.container}>
+        <Text style={[detailSectionTextStyles.detailSectionText, {flex: 0.2}]}>{this.props.sectionTitle}</Text>
+        <Text style={[detailSectionTextStyles.detailSectionText, {flex: 0.05}]}> : </Text>
+        <Text style={[detailSectionTextStyles.detailSectionText, {flex: 0.75}]}>{this.props.sectionContent}</Text>
+      </View>
+    );
+  }
+}
+
+const headerStyles = StyleSheet.create({
+  backButton: {
+    paddingLeft: 10,
+  },
+  rentButton: {
+    width: 80,
+    height: 40,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#1C3879',
+    borderRadius: 10,
+    marginRight: 10,
+  },
+  rentButtonText: {
+    color: '#F9F5EB',
+  }
+})
+
 const styles = StyleSheet.create({
   container: {
     backgroundColor: '#F9F5EB',
     flex: 1,
+    paddingHorizontal: '7.5%',
   },
   image: {
-    width: '100%',
-    height: 500,
-  },
-  bookingDetailSection: {
-    backgroundColor: '#F9F5EB',
-    height: '60%',
-    width: '100%',
-    position: 'absolute',
-    zIndex: 1,
-    bottom: 0,
-    borderTopLeftRadius: 15,
-    borderTopRightRadius: 15,
-    padding: 20,
-  },
-  bookTitle: {
-    fontSize: 35,
-    fontFamily: 'PlayfairDisplay-Bold',
-  },
-  dateSection: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginRight: 10,
-  },
-  text: {
-    fontSize: 20,
-    fontWeight: 'bold',
-  },
-  selectSection: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  confirmButton: {
-    backgroundColor: '#1C3879',
-    borderRadius: 30,
-    height: 60,
-    width: '85%',
+    width: 150,
+    height: 225,
+    marginVertical: 25,
+    borderRadius: 10,
     alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center'
   },
-  buttonText: {
-    color: '#F9F5EB',
-    fontSize: 20,
+  descriptionSection: {
+    paddingTop: 20,
+    width: '100%',
+    height: '40%',
+  },
+  descriptionText: {
+    textAlign: 'justify',
+    lineHeight: 25,
   }
+})
+
+const detailSectionTextStyles = StyleSheet.create({
+  container: {
+    flexDirection: 'row',
+  },
+  detailSectionText: {
+    fontWeight: 'bold',
+    color: '#000',
+  },
 })

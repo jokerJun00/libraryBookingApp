@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, ScrollView, View } from 'react-native';
+import { StyleSheet, Text, ScrollView, View, Button } from 'react-native';
 
 
 export default class BookListScreen extends Component {
@@ -7,6 +7,12 @@ export default class BookListScreen extends Component {
     return(
       <View style={styles.container}>
         <Text>This is Book List Screen</Text>
+        <Button
+          onPress={() => {
+            this.props.navigation.navigate('BookDetail');
+          }}
+          title="Book Detail"
+        ></Button>
       </View>
     );
   }

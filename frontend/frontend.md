@@ -9,3 +9,9 @@ https://colorhunt.co/palette/1c3879607eaaeae3d2f9f5eb
 
 usage of datePicker:
 https://github.com/henninghall/react-native-date-picker#example-1-modal
+
+usage of popUp Dialog:
+https://www.npmjs.com/package/react-native-popup-dialog
+
+usage of nested screen navigator:
+https://reactnavigation.org/docs/nesting-navigators/
