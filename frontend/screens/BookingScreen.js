@@ -11,6 +11,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-date-picker';
 import Dialog, { DialogTitle, DialogFooter, DialogButton, DiaglogContent, DialogContent } from 'react-native-popup-dialog';
 
+import BackButton from '../components/BackButton';
+
 // reminder
 // 1. need to develop logic for dialog pop up to display successful / fail message
 //    since the database logic havent develop yet so I did not create the logic.
@@ -37,13 +39,7 @@ export default class BookingScreen extends Component {
       headerShown: true,
       headerTitle: 'Rich Dad Poor Dad',
       headerLeft: () => (
-        <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          onPress={() => this.props.navigation.goBack()}
-        >
-          <Ionicons name='arrow-back-outline' size={35} color='#000'/>
-        </TouchableOpacity>
-      </View>
+        <BackButton parentProps={this.props}/>
       ),
     })
   }

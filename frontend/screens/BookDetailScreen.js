@@ -13,11 +13,8 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-date-picker';
 import Dialog, { DialogTitle, DialogFooter, DialogButton, DiaglogContent, DialogContent } from 'react-native-popup-dialog';
 
-// should use this Button for header
-// import BackButton from '../Components/BackButton';
+import BackButton from '../components/BackButton';
 
-// reminder 
-// 2. modify book detail section
 
 export default class BookDetailScreen extends Component {
   constructor(props) {
@@ -36,13 +33,7 @@ export default class BookDetailScreen extends Component {
       headerShown: true,
       headerTitle: this.state.bookTitle,
       headerLeft: () => (
-        <View style={headerStyles.backButton}>
-        <TouchableOpacity
-          onPress={() => this.props.navigation.goBack()}
-        >
-          <Ionicons name='arrow-back-outline' size={35} color='#000'/>
-        </TouchableOpacity>
-      </View>
+        <BackButton parentProps={this.props} />
       ),
       headerRight: () => (
         <View style={headerStyles.rentButton}>
