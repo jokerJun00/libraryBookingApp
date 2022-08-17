@@ -9,26 +9,53 @@ import {
   TouchableOpacity,
   Button,
 } from 'react-native';
-import Ionicons from 'react-native-vector-icons/Ionicons';
-import DatePicker from 'react-native-date-picker';
-import Dialog, { DialogTitle, DialogFooter, DialogButton, DiaglogContent, DialogContent } from 'react-native-popup-dialog';
-
 import BackButton from '../components/BackButton';
+import {FloatingAction} from 'react-native-floating-action';
 
+let SQLite = require('react-native-sqlite-storage');
 
 export default class BookDetailScreen extends Component {
   constructor(props) {
     super(props);
-    this.state = { 
-      bookTitle: "Rich Dad, Poor Dad",
-      bookAuthor: "Robert Kiyosaki, Sharon Lechter",
-      publisher: "Warner Business Books",
-      status: "Available",
-      bookDescription: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec eget metus vitae leo venenatis imperdiet pellentesque a urna. Integer gravida sollicitudin risus, ut fringilla erat semper et. Mauris dictum bibendum erat, sed mattis tellus fringilla non. Duis posuere diam convallis ex ullamcorper sollicitudin. Sed rhoncus consectetur est, finibus sollicitudin enim consectetur ut. Donec rhoncus, arcu id mollis maximus, lacus risus egestas libero, ac efficitur lectus nisl et eros. Aenean ultricies augue ac luctus tincidunt. Curabitur eu euismod tortor. Aenean nunc eros, dignissim at pellentesque at, interdum ut sapien. Curabitur blandit neque at nibh placerat, quis venenatis nulla cursus. Nam sit amet vestibulum leo, sed dictum dui. Donec condimentum facilisis faucibus. Donec magna arcu, luctus nec ex ut, lacinia pulvinar lectus. Duis dui quam, tincidunt et commodo ut, tincidunt non purus.",
-    }
+    this.state = {
+      bookID: this.props.route.params.id,
+      bookTitle: this.props.route.params.headerTitle,
+      book: null,
+    };
+    console.log(this.state.bookID);
+    this.db = SQLite.openDatabase(
+      {name: 'bookdb'},
+      this.openCallback,
+      this.errorCallback,
+    );
+    this._queryByID = this._queryByID.bind(this);
+  }
+
+  _queryByID() {
+    this.db.transaction(tx =>
+      tx.executeSql('SELECT * FROM book WHERE ID = ?',[this.state.bookID],(tx, results) => {
+        console.log("queryBYId:"+ results.rows.item(0));
+        console.log("queryBYId:"+ results.rows.item(0).Title);
+        if (results.rows.length) {
+          this.setState({book: results.rows.item(0)});
+        }
+      })
+    );
   }
 
   componentDidMount() {
+    this._queryByID();
+    console.log("componentDidMount");
+  }
+
+  openCallback() {
+    console.log('database opened successfully');
+  }
+  errorCallback(err) {
+    console.log('error in opening database: ' + err);
+  }
+
+  componentDidUpdate() {
     this.props.navigation.setOptions({
       headerShown: true,
       headerTitle: this.state.bookTitle,
@@ -48,6 +75,7 @@ export default class BookDetailScreen extends Component {
   }
 
   render() {
+    let book = this.state.book;
     return(
       <View style={styles.container}>
         <Image
@@ -59,19 +87,19 @@ export default class BookDetailScreen extends Component {
         <View style={styles.detailSection}>
           <DetailSectionText
             sectionTitle="Book Title"
-            sectionContent={this.state.bookTitle}
+            sectionContent={"Hello"}
           />
           <DetailSectionText
             sectionTitle="Author" 
-            sectionContent={this.state.bookAuthor}
+            sectionContent={"Hello"}
           />
           <DetailSectionText
             sectionTitle="Publisher"
-            sectionContent={this.state.publisher}
+            sectionContent={"Hello"}
           />
           <DetailSectionText
             sectionTitle="Status"
-            sectionContent={this.state.status}
+            sectionContent={"Hello"}
           />
         </View>
 
@@ -82,7 +110,7 @@ export default class BookDetailScreen extends Component {
           <Text>Description: </Text>
           <View style={{height: 30}}></View>
           <ScrollView>
-            <Text style={styles.descriptionText}>{this.state.bookDescription}</Text>
+            <Text style={styles.descriptionText}>{"Hello"}</Text>
           </ScrollView>
         </View>
         
