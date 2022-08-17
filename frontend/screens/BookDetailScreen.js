@@ -19,8 +19,12 @@ export default class BookDetailScreen extends Component {
     super(props);
     this.state = {
       bookID: this.props.route.params.id,
-      bookTitle: this.props.route.params.headerTitle,
-      book: null,
+      Img: '',
+      Title: '',
+      Author: '',
+      Description: '',
+      Price: '',
+      Status: '01',
     };
     console.log(this.state.bookID);
     this.db = SQLite.openDatabase(
@@ -34,10 +38,10 @@ export default class BookDetailScreen extends Component {
   _queryByID() {
     this.db.transaction(tx =>
       tx.executeSql('SELECT * FROM book WHERE ID = ?',[this.state.bookID],(tx, results) => {
-        console.log("queryBYId:"+ results.rows.item(0));
         console.log("queryBYId:"+ results.rows.item(0).Title);
+        console.log("queryBYId:"+ results.rows.length);
         if (results.rows.length) {
-          this.setState({book: results.rows.item(0)});
+          this.setState({Img: results.rows.item(0).Img, Title: results.rows.item(0).Title, Author: results.rows.item(0).Author, Description: results.rows.item(0).Description, Price: results.rows.item(0).Price, Status: results.rows.item(0).Status });
         }
       })
     );
@@ -80,26 +84,22 @@ export default class BookDetailScreen extends Component {
       <View style={styles.container}>
         <Image
           style={styles.image}
-          source={require('../../assets/images/books-images/rich-dad-poor-dad.jpeg')}
+          source={{uri: this.state.Img }}
         />
 
         {/* Book Detail Section */}
         <View style={styles.detailSection}>
           <DetailSectionText
             sectionTitle="Book Title"
-            sectionContent={"Hello"}
+            sectionContent={this.state.Title}
           />
           <DetailSectionText
             sectionTitle="Author" 
-            sectionContent={"Hello"}
-          />
-          <DetailSectionText
-            sectionTitle="Publisher"
-            sectionContent={"Hello"}
+            sectionContent={this.state.Author}
           />
           <DetailSectionText
             sectionTitle="Status"
-            sectionContent={"Hello"}
+            sectionContent={this.state.Status}
           />
         </View>
 
@@ -110,7 +110,7 @@ export default class BookDetailScreen extends Component {
           <Text>Description: </Text>
           <View style={{height: 30}}></View>
           <ScrollView>
-            <Text style={styles.descriptionText}>{"Hello"}</Text>
+            <Text style={styles.descriptionText}>{this.state.Description}</Text>
           </ScrollView>
         </View>
         

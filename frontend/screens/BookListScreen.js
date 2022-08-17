@@ -125,6 +125,7 @@ export default class BookListScreen extends Component {
           )}
           keyExtractor={item => {
             item.ID.toString();
+            item.Price.toString();
           }}
         />
         <FloatingAction
@@ -132,7 +133,7 @@ export default class BookListScreen extends Component {
           overrideWithAction={true}
           color={'#a80000'}
           onPressItem={() => {
-            this.props.navigation.navigate('BookDetail', {
+            this.props.navigation.navigate('CreateBook', {
               refresh: this._query,
             });
           }}
