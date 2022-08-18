@@ -21,9 +21,11 @@ const Separator = () => (
 export default class BookListScreen extends Component { 
   constructor(props) {
     super(props);
+
     this.state = {
       books: [],
     };
+
     this._query = this._query.bind(this);
     this._databasePrepare = this._databasePrepare.bind(this);
     this.db = SQLite.openDatabase(
@@ -89,6 +91,7 @@ export default class BookListScreen extends Component {
   openCallback() {
     console.log('database open success');
   }
+
   errorCallback(err) {
     console.log('Error in opening the database: ' + err);
   }
@@ -113,12 +116,12 @@ export default class BookListScreen extends Component {
                 <Button
                   title="Book Detail"
                   onPress={() => {
-                      this.props.navigation.navigate('BookDetail', {
-                        id: item.ID,
-                        headerTitle: item.Title,
-                        refresh: this._query,
-                      });
-                    }}
+                    this.props.navigation.navigate('BookDetail', {
+                      id: item.ID,
+                      headerTitle: item.Title,
+                      refresh: this._query,
+                    });
+                  }}
                 />
               </View>
             </View>
@@ -131,7 +134,7 @@ export default class BookListScreen extends Component {
         <FloatingAction
           actions={actions}
           overrideWithAction={true}
-          color={'#a80000'}
+          color={'#607EAA'}
           onPressItem={() => {
             this.props.navigation.navigate('CreateBook', {
               refresh: this._query,

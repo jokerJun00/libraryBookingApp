@@ -73,9 +73,32 @@ export default class App extends Component {
   render() {
     return (
       <NavigationContainer>
-        <Tab.Navigator initialRouteName={'First Screen'}>
-          <Tab.Screen name="First Screen" component={MyStack} options={{ headerShown: false, tabBarIcon:()=>{return(<Ionicons name='home' size={20} color={'blue'}></Ionicons>)} }}></Tab.Screen>
-          <Tab.Screen name="Profile" component={UserProfileScreen} options={{ tabBarIcon:()=>{return(<Ionicons name='person' size={20} color={'blue'}></Ionicons>)}}}></Tab.Screen>
+        <Tab.Navigator 
+          initialRouteName={'First Screen'}
+        >
+          <Tab.Screen 
+            name="First Screen" 
+            component={MyStack} 
+            options={{ 
+              headerShown: false, 
+              tabBarIcon: () => {
+                return(
+                  <Ionicons name='home' size={20} color={'#607EAA'}></Ionicons>
+                )
+              } 
+            }}
+          ></Tab.Screen>
+          <Tab.Screen 
+            name="Profile" 
+            component={UserProfileScreen} 
+            options={{ 
+              tabBarIcon: () => {
+                return(
+                  <Ionicons name='person' size={20} color={'#607EAA'}></Ionicons>
+                )
+              }
+            }}
+          ></Tab.Screen>
         </Tab.Navigator>
       </NavigationContainer>
     );

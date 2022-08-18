@@ -18,14 +18,13 @@ class InputWithLabel extends Component {
 
     this.orientation = this.props.orientation
       ? this.props.orientation == 'horizontal'
-        ? 'row'
-        : 'column'
+        ? 'row' : 'column'
       : 'column';
   }
 
   render() {
     return (
-      <View style={[inputStyles.container, {flexDirection: this.orientation}]}>
+      <View style={[this.props.container, {flexDirection: this.orientation}]}>
         <Text style={this.props.textLabelStyle}>{this.props.label}</Text>
         <TextInput style={[this.props.textInputStyle]} {...this.props} />
       </View>
@@ -137,7 +136,7 @@ const inputStyles = StyleSheet.create({
   container: {
     height: 100,
   },
-});
+})
 
 /**
  * Export modules
