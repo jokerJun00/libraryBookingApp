@@ -90,7 +90,9 @@ const buttonStyles = StyleSheet.create({
     alignItems: 'center',
   },
   buttonText: {
-    padding: 20,
+    paddingRight: 20,
+    paddingTop:20,
+    paddingBottom:20,
     fontSize: 20,
     color: 'white',
   },

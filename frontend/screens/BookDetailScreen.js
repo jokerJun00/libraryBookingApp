@@ -1,34 +1,47 @@
 import React, { Component } from 'react';
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
+import {
+  StyleSheet,
+  Text,
+  View,
   ScrollView,
   Image,
-  TouchableNativeFeedbackBase, 
+  TouchableNativeFeedbackBase,
   TouchableOpacity,
   Button,
+  Alert,
 } from 'react-native';
 import BackButton from '../components/BackButton';
-import {FloatingAction} from 'react-native-floating-action';
+import { FloatingAction } from 'react-native-floating-action';
+import { Floatingbutt } from '../UI';
 
 let SQLite = require('react-native-sqlite-storage');
+
+const actions = [
+  {
+    text: "Edit",
+    name: "edit",
+    position: 1,
+  },
+  {
+    text: "Delete",
+    name: "delete",
+    position: 2,
+  },
+
+
+];
 
 export default class BookDetailScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      bookID: this.props.route.params.id,
-      Img: '',
-      Title: '',
-      Author: '',
-      Description: '',
-      Price: '',
-      Status: '01',
+
+      book:this.props.route.params.book,
+
     };
     console.log(this.state.bookID);
     this.db = SQLite.openDatabase(
-      {name: 'bookdb'},
+      { name: 'bookdb' },
       this.openCallback,
       this.errorCallback,
     );
@@ -37,19 +50,60 @@ export default class BookDetailScreen extends Component {
 
   _queryByID() {
     this.db.transaction(tx =>
-      tx.executeSql('SELECT * FROM book WHERE ID = ?',[this.state.bookID],(tx, results) => {
-        console.log("queryBYId:"+ results.rows.item(0).Title);
-        console.log("queryBYId:"+ results.rows.length);
+      tx.executeSql('SELECT * FROM book WHERE ID = ?', [this.state.book.ID], (tx, results) => {
+        console.log("queryBYId:" + results.rows.item(0).Title);
+        console.log("queryBYId:" + results.rows.length);
         if (results.rows.length) {
-          this.setState({Img: results.rows.item(0).Img, Title: results.rows.item(0).Title, Author: results.rows.item(0).Author, Description: results.rows.item(0).Description, Price: results.rows.item(0).Price, Status: results.rows.item(0).Status });
+          this.setState({ book : results.rows.raw()[0]});
         }
       })
     );
   }
 
+  _delete() {
+    Alert.alert('Confirm to delete ?', this.state.book.Title, [
+      {
+        text: 'No',
+        onPress: () => { },
+      },
+      {
+        text: 'Yes',
+        onPress: () => {
+          this.db.transaction(tx => {
+            tx.executeSql('DELETE FROM book WHERE id = ?', [
+              this.state.book.ID,
+            ]);
+          });
+          this.props.route.params.refresh();
+          this.props.navigation.goBack();
+        },
+      },
+    ]);
+  }
+
   componentDidMount() {
     this._queryByID();
-    console.log("componentDidMount");
+    this.props.navigation.setOptions({
+      headerShown: true,
+      headerTitle: this.state.book.Title,
+      headerLeft: () => (
+        <BackButton parentProps={this.props} />
+      ),
+      headerRight: () => (
+        <View style={headerStyles.rentButton}>
+          <Button
+                  title="Rent"
+                  onPress={() => {
+                    this.props.navigation.navigate('Booking', {
+                      book:this.state.book,
+ 
+                    });
+                  }}
+                />
+
+        </View>
+      )
+    })
   }
 
   openCallback() {
@@ -59,61 +113,72 @@ export default class BookDetailScreen extends Component {
     console.log('error in opening database: ' + err);
   }
 
-  componentDidUpdate() {
-    this.props.navigation.setOptions({
-      headerShown: true,
-      headerTitle: this.state.bookTitle,
-      headerLeft: () => (
-        <BackButton parentProps={this.props} />
-      ),
-      headerRight: () => (
-        <View style={headerStyles.rentButton}>
-          <TouchableOpacity
-            onPress={() => this.props.navigation.navigate('Booking')}
-          >
-            <Text style={headerStyles.rentButtonText}>Rent</Text>
-          </TouchableOpacity>
-        </View>
-      )
-    })
-  }
 
   render() {
-    let book = this.state.book;
-    return(
+    return (
       <View style={styles.container}>
         <Image
           style={styles.image}
-          source={{uri: this.state.Img }}
+          source={{ uri: this.state.book.Img }}
         />
 
         {/* Book Detail Section */}
         <View style={styles.detailSection}>
           <DetailSectionText
             sectionTitle="Book Title"
-            sectionContent={this.state.Title}
+            sectionContent={this.state.book.Title}
           />
           <DetailSectionText
-            sectionTitle="Author" 
-            sectionContent={this.state.Author}
+            sectionTitle="Author"
+            sectionContent={this.state.book.Author}
           />
           <DetailSectionText
             sectionTitle="Status"
-            sectionContent={this.state.Status}
+            sectionContent={this.state.book.Status}
           />
         </View>
 
-        <View style={{height: 20}}></View>
+        <View style={{ height: 20 }}></View>
 
         {/* Book Description Section */}
         <View style={styles.descriptionSection}>
           <Text>Description: </Text>
-          <View style={{height: 30}}></View>
+          <View style={{ height: 30 }}></View>
           <ScrollView>
-            <Text style={styles.descriptionText}>{this.state.Description}</Text>
+            <Text style={styles.descriptionText}>{this.state.book.Description}</Text>
           </ScrollView>
         </View>
-        
+        <View >
+          <FloatingAction
+            actions={actions}
+            onPressItem={name => {
+              if (name) {
+                switch (name) {
+                  case 'edit':
+                    this.backgroundColor = '#449d44';
+                    console.log(`selected button: edit button pressed`);
+
+                    this.props.navigation.navigate('UpdateBook', {
+                      book : this.state.book,
+                      refresh: this._queryByID,
+                      homeRefresh: this.props.route.params.refresh,
+                    });
+                    
+                    break;
+                  case 'delete':
+                    console.log(`selected button: delete button pressed`);
+                    this._delete();
+
+                    break;
+                  default:
+                    console.log(`selected button: wtf button pressed`);
+                }
+              } else {
+                this.backgroundColor = '#286090';
+              }
+            }}
+          />
+        </View>
       </View>
     );
   }
@@ -121,11 +186,11 @@ export default class BookDetailScreen extends Component {
 
 class DetailSectionText extends Component {
   render() {
-    return(
+    return (
       <View style={detailSectionTextStyles.container}>
-        <Text style={[detailSectionTextStyles.detailSectionText, {flex: 0.2}]}>{this.props.sectionTitle}</Text>
-        <Text style={[detailSectionTextStyles.detailSectionText, {flex: 0.05}]}> : </Text>
-        <Text style={[detailSectionTextStyles.detailSectionText, {flex: 0.75}]}>{this.props.sectionContent}</Text>
+        <Text style={[detailSectionTextStyles.detailSectionText, { flex: 0.2 }]}>{this.props.sectionTitle}</Text>
+        <Text style={[detailSectionTextStyles.detailSectionText, { flex: 0.05 }]}> : </Text>
+        <Text style={[detailSectionTextStyles.detailSectionText, { flex: 0.75 }]}>{this.props.sectionContent}</Text>
       </View>
     );
   }

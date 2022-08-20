@@ -134,16 +134,16 @@ export default class CreateScreen extends Component<Props> {
         />
         <View style={styles.checkBoxContainer}>
           <CheckBox
-            value={this.state.isAvailable}
+            value={this.state.Status=='Available'?true:false}
             tintColors={{ true: '#1C3879', false: '#C21010' }}
             onValueChange={isAvailable => {
               this.setState({isAvailable});
               let status = '01';
 
-              this.state.isAvailable == false ? status = '02' : null;
+
 
               this.setState({
-                Status: status,
+                Status:   this.state.isAvailable == false ?  'Not Available' : 'Available',
               })
             }}
           />
@@ -163,7 +163,9 @@ export default class CreateScreen extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     heigth: '70%',
-    padding: 20,
+    paddingRight: 20,
+    paddingTop:20,
+    paddingBottom:20,
     backgroundColor: '#fff',
   },
   SectionContainer: {
