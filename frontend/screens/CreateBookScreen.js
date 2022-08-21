@@ -70,91 +70,91 @@ export default class CreateScreen extends Component<Props> {
     return (
       <View style={styles.container}>
         <ScrollView>
-        <InputWithLabel
-          container={styles.SectionContainer}
-          textLabelStyle={styles.TextLabel}
-          textInputStyle={styles.TextInput}
-          label={'Img URL'}
-          placeholder={'Type Book Img Url Here'}
-          value={this.state.Img}
-          onChangeText={Img => {
-            this.setState({Img});
-          }}
-          orientation={'vertical'}
-        />
-        <InputWithLabel
-          container={styles.SectionContainer}
-          textLabelStyle={styles.TextLabel}
-          textInputStyle={styles.TextInput}
-          placeholder={'Type Book Title Here'}
-          label={'Title'}
-          value={this.state.Title}
-          onChangeText={Title => {
-            this.setState({Title});
-          }}
-          orientation={'vertical'}
-        />
-        <InputWithLabel
-          container={styles.SectionContainer}
-          textLabelStyle={styles.TextLabel}
-          textInputStyle={styles.TextInput}
-          placeholder={'Type Book Author Here'}
-          label={'Author'}
-          value={this.state.Author}
-          onChangeText={Author => {
-            this.setState({Author});
-          }}
-          orientation={'vertical'}
-        />
-        <InputWithLabel
-          container={styles.DescriptionContainer}
-          textLabelStyle={styles.TextLabel}
-          textInputStyle={[styles.DescriptionTextInput, {height: 150, textAlignVertical: 'top'}]}
-          placeholder={'Type Book Description Here'}
-          multiline={true}
-          label={'Description'}
-          value={this.state.Description}
-          onChangeText={Description => {
-            this.setState({Description});
-          }}
-          orientation={'vertical'}
-        />
-        <InputWithLabel
-          container={styles.SectionContainer}
-          textLabelStyle={styles.TextLabel}
-          textInputStyle={styles.TextInput}
-          placeholder={'Type Book Price Here'}
-          label={'Price'}
-          value={this.state.Price}
-          onChangeText={Price => {
-            this.setState({Price});
-          }}
-          keyboardType={'numeric'}
-          orientation={'vertical'}
-        />
-        <View style={styles.checkBoxContainer}>
-          <CheckBox
-            value={this.state.Status=='Available'?true:false}
-            tintColors={{ true: '#1C3879', false: '#C21010' }}
-            onValueChange={isAvailable => {
-              this.setState({isAvailable});
-              let status = '01';
-
-
-
-              this.setState({
-                Status:   this.state.isAvailable == false ?  'Not Available' : 'Available',
-              })
+          <InputWithLabel
+            container={styles.SectionContainer}
+            textLabelStyle={styles.TextLabel}
+            textInputStyle={styles.TextInput}
+            label={'Img URL'}
+            placeholder={'Type Book Img Url Here'}
+            value={this.state.Img}
+            onChangeText={Img => {
+              this.setState({Img});
             }}
+            orientation={'vertical'}
           />
-          <Text style={{color: '#1C3879'}}>Set this book to available</Text>
-        </View>
-        <View style={{height: 50}}></View>
-        <TouchableOpacity  onPress={this._insert} style={styles.button}>
-          <Text style={styles.buttonText}>Save</Text>
-        </TouchableOpacity>
-        <View style={{heigth: 100}}></View>
-      </ScrollView>
+          <InputWithLabel
+            container={styles.SectionContainer}
+            textLabelStyle={styles.TextLabel}
+            textInputStyle={styles.TextInput}
+            placeholder={'Type Book Title Here'}
+            label={'Title'}
+            value={this.state.Title}
+            onChangeText={Title => {
+              this.setState({Title});
+            }}
+            orientation={'vertical'}
+          />
+          <InputWithLabel
+            container={styles.SectionContainer}
+            textLabelStyle={styles.TextLabel}
+            textInputStyle={styles.TextInput}
+            placeholder={'Type Book Author Here'}
+            label={'Author'}
+            value={this.state.Author}
+            onChangeText={Author => {
+              this.setState({Author});
+            }}
+            orientation={'vertical'}
+          />
+          <InputWithLabel
+            container={styles.DescriptionContainer}
+            textLabelStyle={styles.TextLabel}
+            textInputStyle={[styles.DescriptionTextInput, {height: 150, textAlignVertical: 'top'}]}
+            placeholder={'Type Book Description Here'}
+            multiline={true}
+            label={'Description'}
+            value={this.state.Description}
+            onChangeText={Description => {
+              this.setState({Description});
+            }}
+            orientation={'vertical'}
+          />
+          <InputWithLabel
+            container={styles.SectionContainer}
+            textLabelStyle={styles.TextLabel}
+            textInputStyle={styles.TextInput}
+            placeholder={'Type Book Price Here'}
+            label={'Price'}
+            value={this.state.Price}
+            onChangeText={Price => {
+              this.setState({Price});
+            }}
+            keyboardType={'numeric'}
+            orientation={'vertical'}
+          />
+          <View style={styles.checkBoxContainer}>
+            <CheckBox
+              value={this.state.Status=='Available'?true:false}
+              tintColors={{ true: '#1C3879', false: '#C21010' }}
+              onValueChange={isAvailable => {
+                this.setState({isAvailable});
+                let status = '01';
+
+
+
+                this.setState({
+                  Status:   this.state.isAvailable == false ?  'Not Available' : 'Available',
+                })
+              }}
+            />
+            <Text style={{color: '#1C3879'}}>Set this book to available</Text>
+          </View>
+          <View style={{height: 20}}></View>
+          <TouchableOpacity  onPress={this._insert} style={styles.button}>
+            <Text style={styles.buttonText}>Save</Text>
+          </TouchableOpacity>
+          <View style={{heigth: 100}}></View>
+        </ScrollView>
       </View>
     );
   }
@@ -163,9 +163,7 @@ export default class CreateScreen extends Component<Props> {
 const styles = StyleSheet.create({
   container: {
     heigth: '70%',
-    paddingRight: 20,
-    paddingTop:20,
-    paddingBottom:20,
+    paddingHorizontal: 10,
     backgroundColor: '#fff',
   },
   SectionContainer: {

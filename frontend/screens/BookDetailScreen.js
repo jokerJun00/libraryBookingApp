@@ -20,11 +20,13 @@ const actions = [
   {
     text: "Edit",
     name: "edit",
+    icon: require('../../assets/icons/edit_icon.png'),
     position: 1,
   },
   {
     text: "Delete",
     name: "delete",
+    icon: require('../../assets/icons/delete_icon.jpg'),
     position: 2,
   },
 
@@ -87,20 +89,19 @@ export default class BookDetailScreen extends Component {
       headerShown: true,
       headerTitle: this.state.book.Title,
       headerLeft: () => (
-        <BackButton parentProps={this.props} />
+        <BackButton parentProps={this.props} color="white"/>
       ),
       headerRight: () => (
         <View style={headerStyles.rentButton}>
-          <Button
-                  title="Rent"
-                  onPress={() => {
-                    this.props.navigation.navigate('Booking', {
-                      book:this.state.book,
- 
-                    });
-                  }}
-                />
-
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.navigate('Booking', {
+                book:this.state.book,
+              });
+            }}
+          >
+            <Text style={headerStyles.rentButtonText}>Rent</Text>
+          </TouchableOpacity>
         </View>
       )
     })
@@ -148,9 +149,9 @@ export default class BookDetailScreen extends Component {
             <Text style={styles.descriptionText}>{this.state.book.Description}</Text>
           </ScrollView>
         </View>
-        <View >
-          <FloatingAction
+        <FloatingAction
             actions={actions}
+            color={'#607EAA'}
             onPressItem={name => {
               if (name) {
                 switch (name) {
@@ -178,7 +179,6 @@ export default class BookDetailScreen extends Component {
               }
             }}
           />
-        </View>
       </View>
     );
   }
@@ -197,26 +197,27 @@ class DetailSectionText extends Component {
 }
 
 const headerStyles = StyleSheet.create({
-  backButton: {
-    paddingLeft: 10,
-  },
   rentButton: {
-    width: 80,
-    height: 40,
+    width: 60,
+    height: 37,
     justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: '#1C3879',
     borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#fff',
     marginRight: 10,
   },
   rentButtonText: {
-    color: '#F9F5EB',
+    color: '#fff',
+    fontFamily: 'bold',
+    fontSize: 16,
   }
 })
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#F9F5EB',
+    backgroundColor: '#fff',
     flex: 1,
     paddingHorizontal: '7.5%',
   },

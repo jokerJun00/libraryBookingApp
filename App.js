@@ -30,81 +30,93 @@ import UpdateBookScene from './frontend/screens/UpdateBookScreen';
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
 
-const MyStack=()=>{
-  return(
-    <Stack.Navigator
-      initialRouteName='Home'
-      screenOptions={{
-        headerShown: false,
-        headerTitleStyle: {
-          fontSize: 20,
-          fontFamily: 'PlayfairDisplay-Bold',
-        },
-        headerStyle: {
-          backgroundColor: '#F9F5EB',
-          paddingLeft: 20,
-        },
-        headerTintColor: '#000',
-      }}>
-      <Stack.Screen
-        name='Home'
-        component={HomeScreen}></Stack.Screen>
-      <Stack.Screen
-        name='BookList'
-        component={BookListScreen}></Stack.Screen>
-      <Stack.Screen
-        name='CreateBook'
-        component={CreateBookScreen}></Stack.Screen>
-      <Stack.Screen
-        name='BookDetail'
-        component={BookDetailScreen}></Stack.Screen>
-      <Stack.Screen
-        name='UpdateBook'
-        component={UpdateBookScene}></Stack.Screen>
-      <Stack.Screen
-        name='Booking'
-        component={BookingScreen}
-        options={{
-          headerLeft: () => (
-            <BackButton/>
-          ),
-        }}></Stack.Screen>
-    </Stack.Navigator>
-  )
-}
-  
 export default class App extends Component {
   render() {
-    return (
+    return(
       <NavigationContainer>
-        <Tab.Navigator 
-          initialRouteName={'First Screen'}
-        >
-          <Tab.Screen 
-            name="First Screen" 
-            component={MyStack} 
-            options={{ 
-              headerShown: false, 
-              tabBarIcon: () => {
-                return(
-                  <Ionicons name='home' size={20} color={'#607EAA'}></Ionicons>
-                )
-              } 
-            }}
-          ></Tab.Screen>
-          <Tab.Screen 
-            name="Profile" 
-            component={UserProfileScreen} 
-            options={{ 
-              tabBarIcon: () => {
-                return(
-                  <Ionicons name='person' size={20} color={'#607EAA'}></Ionicons>
-                )
-              }
-            }}
-          ></Tab.Screen>
-        </Tab.Navigator>
+        <Stack.Navigator
+          initialRouteName='Home'
+          screenOptions={{
+            headerShown: false,
+            headerTitleStyle: {
+              fontSize: 20,
+              fontFamily: 'PlayfairDisplay-Bold',
+            },
+            headerStyle: {
+              backgroundColor: '#1C3879',
+            },
+            headerTintColor: '#fff',
+          }}>
+          <Stack.Screen
+            name='Home'
+            component={TabNavigator}></Stack.Screen>
+          <Stack.Screen
+            name='BookList'
+            component={BookListScreen}></Stack.Screen>
+          <Stack.Screen
+            name='CreateBook'
+            component={CreateBookScreen}></Stack.Screen>
+          <Stack.Screen
+            name='BookDetail'
+            component={BookDetailScreen}></Stack.Screen>
+          <Stack.Screen
+            name='UpdateBook'
+            component={UpdateBookScene}></Stack.Screen>
+          <Stack.Screen
+            name='Booking'
+            component={BookingScreen}
+            options={{
+              headerLeft: () => (
+                <BackButton/>
+              ),
+            }}></Stack.Screen>
+        </Stack.Navigator>
       </NavigationContainer>
+      
+    );
+  }
+}
+  
+class TabNavigator extends Component {
+  render() {
+    return (
+      <Tab.Navigator 
+        initialRouteName={'Home'}
+        screenOptions={{
+          headerTitleStyle: {
+            fontSize: 30,
+            fontFamily: 'PlayfairDisplay-Bold',
+          },
+          headerStyle: {
+            backgroundColor: '#1C3879',
+          },
+          headerTintColor: '#fff',
+        }}
+      >
+        <Tab.Screen
+          name="Home"
+          component={HomeScreen}
+          options={{ 
+            headerShown: false, 
+            tabBarIcon: () => {
+              return(
+                <Ionicons name='home' size={20} color={'#607EAA'}></Ionicons>
+              )
+            } 
+          }}
+        />
+        <Tab.Screen 
+          name="Profile" 
+          component={UserProfileScreen} 
+          options={{ 
+            tabBarIcon: () => {
+              return(
+                <Ionicons name='person' size={20} color={'#607EAA'}></Ionicons>
+              )
+            }
+          }}
+        />
+      </Tab.Navigator>
     );
   }
 }

@@ -13,6 +13,7 @@ This is a library booking app created using React-Native
 9. react-native-sqlite-storage
 10. react-native-date-picker
 11. react-native-popup-dialog
+12. @react-native-community/checkbox
 
 # How to start this assignment
 1. `git clone _repo https link_` to clone code file
