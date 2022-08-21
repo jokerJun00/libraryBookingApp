@@ -22,7 +22,7 @@ import BackButton from '../components/BackButton';
 export default class BookingScreen extends Component {
   constructor(props) {
     super(props);
-
+    
     let issueDate = this.formatDate(new Date());
 
     this.state = {
@@ -31,13 +31,14 @@ export default class BookingScreen extends Component {
       openPicker: false,
       openDialog: false,
       rentSuccess: false,
+      book:this.props.route.params.book,
     }
   }
 
   componentDidMount() {
     this.props.navigation.setOptions({
       headerShown: true,
-      headerTitle: 'Rich Dad Poor Dad',
+      headerTitle: this.state.book.Title,
       headerLeft: () => (
         <BackButton parentProps={this.props}/>
       ),
@@ -125,7 +126,7 @@ export default class BookingScreen extends Component {
         {/* book image  */}
         <Image
           style={styles.image}
-          source={require('../../assets/images/books-images/rich-dad-poor-dad.jpeg')}
+          source={{uri:this.state.book.Img}}
         />
 
         <TouchableOpacity 
@@ -136,7 +137,7 @@ export default class BookingScreen extends Component {
 
         {/* booking detail section */}
         <View style={styles.bookingDetailSection}>
-          <Text style={styles.bookTitle}>Rich Dad Poor Dad</Text>
+          <Text style={styles.bookTitle}>{this.state.book.Title}</Text>
           
           <View style={{height: 40}}></View>
 
@@ -203,7 +204,8 @@ const styles = StyleSheet.create({
   },
   image: {
     width: '100%',
-    height: 500,
+    height: 300,
+
   },
   backButton: {
     width: '100%',

@@ -117,6 +117,7 @@ export default class BookListScreen extends Component {
                   title="Book Detail"
                   onPress={() => {
                     this.props.navigation.navigate('BookDetail', {
+                      book:item,
                       id: item.ID,
                       headerTitle: item.Title,
                       refresh: this._query,
@@ -127,8 +128,11 @@ export default class BookListScreen extends Component {
             </View>
           )}
           keyExtractor={item => {
-            item.ID.toString();
-            item.Price.toString();
+            return item.ID,
+            item.Price,
+            item.Title,
+            item.Img,
+            item.Author;
           }}
         />
         <FloatingAction

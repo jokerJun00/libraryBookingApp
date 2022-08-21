@@ -25,6 +25,7 @@ import BookingScreen from './frontend/screens/BookingScreen';
 import BookDetailScreen from './frontend/screens/BookDetailScreen';
 import UserProfileScreen from './frontend/screens/UserProfileScreen';
 import CreateBookScreen from './frontend/screens/CreateBookScreen';
+import UpdateBookScene from './frontend/screens/UpdateBookScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -57,6 +58,9 @@ const MyStack=()=>{
       <Stack.Screen
         name='BookDetail'
         component={BookDetailScreen}></Stack.Screen>
+      <Stack.Screen
+        name='UpdateBook'
+        component={UpdateBookScene}></Stack.Screen>
       <Stack.Screen
         name='Booking'
         component={BookingScreen}
