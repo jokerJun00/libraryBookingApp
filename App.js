@@ -83,8 +83,10 @@ class TabNavigator extends Component {
       <Tab.Navigator 
         initialRouteName={'Home'}
         screenOptions={{
+          tabBarActiveTintColor: '#1C6DD0',
+          tabBarActiveBackgroundColor: '#E8F9FD',
           headerTitleStyle: {
-            fontSize: 30,
+            fontSize: 40,
             fontFamily: 'PlayfairDisplay-Bold',
           },
           headerStyle: {

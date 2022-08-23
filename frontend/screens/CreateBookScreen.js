@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, TextInput, Text, View, ScrollView, TouchableOpacity, TouchableNativeFeedbackBase } from 'react-native';
+import {StyleSheet, TextInput, Text, View, ScrollView, TouchableOpacity, TouchableNativeFeedbackBase, Image } from 'react-native';
 import {InputWithLabel, PickerWithLabel, AppButton} from '../components/UI';
 import CheckBox from '@react-native-community/checkbox';
 import BackButton from '../components/BackButton';
@@ -75,7 +75,7 @@ export default class CreateScreen extends Component<Props> {
             textLabelStyle={styles.TextLabel}
             textInputStyle={styles.TextInput}
             label={'Img URL'}
-            placeholder={'Type Book Img Url Here'}
+            placeholder={'Book Image Url '}
             value={this.state.Img}
             onChangeText={Img => {
               this.setState({Img});
@@ -86,7 +86,7 @@ export default class CreateScreen extends Component<Props> {
             container={styles.SectionContainer}
             textLabelStyle={styles.TextLabel}
             textInputStyle={styles.TextInput}
-            placeholder={'Type Book Title Here'}
+            placeholder={'Book Title'}
             label={'Title'}
             value={this.state.Title}
             onChangeText={Title => {
@@ -98,7 +98,7 @@ export default class CreateScreen extends Component<Props> {
             container={styles.SectionContainer}
             textLabelStyle={styles.TextLabel}
             textInputStyle={styles.TextInput}
-            placeholder={'Type Book Author Here'}
+            placeholder={'Book Author'}
             label={'Author'}
             value={this.state.Author}
             onChangeText={Author => {
@@ -110,7 +110,7 @@ export default class CreateScreen extends Component<Props> {
             container={styles.DescriptionContainer}
             textLabelStyle={styles.TextLabel}
             textInputStyle={[styles.DescriptionTextInput, {height: 150, textAlignVertical: 'top'}]}
-            placeholder={'Type Book Description Here'}
+            placeholder={'Book Description'}
             multiline={true}
             label={'Description'}
             value={this.state.Description}
@@ -123,7 +123,7 @@ export default class CreateScreen extends Component<Props> {
             container={styles.SectionContainer}
             textLabelStyle={styles.TextLabel}
             textInputStyle={styles.TextInput}
-            placeholder={'Type Book Price Here'}
+            placeholder={'Book Price'}
             label={'Price'}
             value={this.state.Price}
             onChangeText={Price => {
@@ -139,9 +139,6 @@ export default class CreateScreen extends Component<Props> {
               onValueChange={isAvailable => {
                 this.setState({isAvailable});
                 let status = '01';
-
-
-
                 this.setState({
                   Status:   this.state.isAvailable == false ?  'Not Available' : 'Available',
                 })
@@ -164,7 +161,7 @@ const styles = StyleSheet.create({
   container: {
     heigth: '70%',
     paddingHorizontal: 10,
-    backgroundColor: '#fff',
+    backgroundColor: '#EEF2FF',
   },
   SectionContainer: {
     height: 80,
@@ -178,7 +175,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 3,
     marginBottom: 5,
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: 'bold',
     textAlignVertical: 'center',
     color: '#000'
@@ -189,7 +186,7 @@ const styles = StyleSheet.create({
     color: '#000',
     borderColor: '#607EAA',
     borderWidth: 1.5,
-    borderRadius: 15,
+    borderRadius: 10,
   },
   DescriptionTextInput: {
     fontSize: 14,
@@ -212,6 +209,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 10,
     backgroundColor: '#1C3879',
+    bottom: 10,
   },
   buttonText: {
     color: '#fff',

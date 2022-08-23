@@ -52,7 +52,7 @@ export default class BookingScreen extends Component {
     let returnDate = new Date();
     returnDate.setDate(returnDate.getDate() + 7);
 
-    // minimum rent dat a= 1 day
+    // minimum rent date = 1 day
     let minimumDate = new Date();
     minimumDate.setDate(minimumDate.getDate() + 1);
 
@@ -155,8 +155,7 @@ export default class BookingScreen extends Component {
             }}
           >
             <Text style={styles.buttonText}>Confirm My Rent</Text>
-          </TouchableOpacity>
-
+          </TouchableOpacity>    
         </View>
       </View>
     );
@@ -182,7 +181,7 @@ const styles = StyleSheet.create({
   },
   bookingDetailSection: {
     backgroundColor: '#fff',
-    height: '50%',
+    height: '60%',
     width: '100%',
     position: 'absolute',
     zIndex: 1,
@@ -221,11 +220,13 @@ const styles = StyleSheet.create({
   confirmButton: {
     backgroundColor: '#1C3879',
     borderRadius: 30,
-    height: 60,
-    width: '85%',
+    height: 50,
+    width: '75%',
     alignSelf: 'center',
     alignItems: 'center',
-    justifyContent: 'center'
+    justifyContent: 'center',
+    position: 'absolute',  
+    bottom: 12,
   },
   buttonText: {
     color: '#F9F5EB',
