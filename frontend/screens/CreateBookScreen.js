@@ -1,12 +1,13 @@
-import React, { Component } from 'react';
-import { StyleSheet, TextInput, Text, View, ScrollView, TouchableOpacity, TouchableNativeFeedbackBase, Alert } from 'react-native';
-import { InputWithLabel, PickerWithLabel, AppButton } from '../components/UI';
+import React, {Component} from 'react';
+import {StyleSheet, TextInput, Text, View, ScrollView, TouchableOpacity, TouchableNativeFeedbackBase, Image } from 'react-native';
+import {InputWithLabel, PickerWithLabel, AppButton} from '../components/UI';
 import CheckBox from '@react-native-community/checkbox';
 import BackButton from '../components/BackButton';
 import ValidationComponent from 'react-native-form-validator'
 
 let common = require('../BookStatus');
 let SQLite = require('react-native-sqlite-storage');
+
 
 const formValid = ({ formErrors, ...rest }) => {
   let valid = true;
@@ -24,7 +25,9 @@ const formValid = ({ formErrors, ...rest }) => {
   return valid;
 };
 
-export default class CreateScreen extends ValidationComponent {
+
+export default class CreateScreen extends Component<Props>{
+
   constructor(props) {
     super(props);
     this.state = {
@@ -141,7 +144,6 @@ export default class CreateScreen extends ValidationComponent {
     return (
       <View style={styles.container}>
         <ScrollView>
-
           <View>
             <InputWithLabel
               className={formErrors.Img.length > 0 ? "error" : null}
@@ -229,13 +231,14 @@ export default class CreateScreen extends ValidationComponent {
             />
             {formErrors.Price.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Price}</Text>)}
           </View>
-
           <View style={styles.checkBoxContainer}>
             <CheckBox
               value={this.state.Status == 'Available' ? true : false}
               tintColors={{ true: '#1C3879', false: '#C21010' }}
               onValueChange={isAvailable => {
+
                 this.setState({ isAvailable });
+
 
                 this.setState({
                   Status: this.state.isAvailable == false ? 'Not Available' : 'Available',
@@ -261,10 +264,9 @@ const styles = StyleSheet.create({
 
   container: {
     heigth: '70%',
-
     paddingHorizontal: 10,
+    backgroundColor: '#EEF2FF',
 
-    backgroundColor: '#fff',
   },
   SectionContainer: {
     height: 80,
@@ -278,7 +280,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginLeft: 3,
     marginBottom: 5,
-    fontSize: 14,
+    fontSize: 15,
     fontWeight: 'bold',
     textAlignVertical: 'center',
     color: '#000'
@@ -289,7 +291,7 @@ const styles = StyleSheet.create({
     color: '#000',
     borderColor: '#607EAA',
     borderWidth: 1.5,
-    borderRadius: 15,
+    borderRadius: 10,
   },
   error: {
     borderWidth: 2,
@@ -320,6 +322,7 @@ const styles = StyleSheet.create({
     height: 50,
     borderRadius: 10,
     backgroundColor: '#1C3879',
+    bottom: 10,
   },
   buttonText: {
     color: '#fff',

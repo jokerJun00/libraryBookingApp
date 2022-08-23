@@ -17,6 +17,7 @@ import 'react-native-gesture-handler';
 
 import BookListScreen from './BookListScreen';
 import UserProfileScreen from './UserProfileScreen';
+import SearchBookInfo from './SearchBookScreen';
 
 const Drawer = createDrawerNavigator();
 
@@ -50,6 +51,15 @@ export default class HomeScreen extends Component {
           options={{
             drawerIcon: ({color}) => (
               <Ionicons name='list-outline' size={20} color={color} />
+            )
+          }}
+        />
+        <Drawer.Screen
+          name='Search Info'
+          component={SearchBookInfo}
+          options={{
+            drawerIcon: ({color}) => (
+              <Ionicons name='search-outline' size={20} color={color} />
             )
           }}
         />

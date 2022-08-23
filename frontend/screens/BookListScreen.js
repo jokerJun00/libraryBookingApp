@@ -130,17 +130,6 @@ export default class BookListScreen extends Component {
                 >
                   <Text style={styles.buttonText}>Book Detail</Text>
                 </TouchableOpacity>
-                {/* <Button
-                  title="Book Detail"
-                  onPress={() => {
-                    this.props.navigation.navigate('BookDetail', {
-                      book:item,
-                      id: item.ID,
-                      headerTitle: item.Title,
-                      refresh: this._query,
-                    });
-                  }}
-                /> */}
               </View>
             </View>
           )}
@@ -152,16 +141,19 @@ export default class BookListScreen extends Component {
             item.Author;
           }}
         />
-        <FloatingAction
-          actions={actions}
-          overrideWithAction={true}
-          color={'#607EAA'}
-          onPressItem={() => {
-            this.props.navigation.navigate('CreateBook', {
-              refresh: this._query,
-            });
-          }}
-        />
+        <View>
+          <FloatingAction
+            actions={actions}
+            overrideWithAction={true}
+            color={'#607EAA'}
+            
+            onPressItem={() => {
+              this.props.navigation.navigate('CreateBook', {
+                refresh: this._query,
+              });
+            }}
+          />
+        </View>
       </View>
     );
   }
