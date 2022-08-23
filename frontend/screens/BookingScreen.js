@@ -13,12 +13,6 @@ import DatePicker from 'react-native-date-picker';
 
 import BackButton from '../components/BackButton';
 
-// reminder
-// 1. need to develop logic for dialog pop up to display successful / fail message
-//    since the database logic havent develop yet so I did not create the logic.
-//    You can create the logic in "Confirm My Rent" button
-// 2. need to develop logic to create data in database
-
 export default class BookingScreen extends Component {
   constructor(props) {
     super(props);
@@ -40,7 +34,7 @@ export default class BookingScreen extends Component {
       headerShown: true,
       headerTitle: this.state.book.Title,
       headerLeft: () => (
-        <BackButton parentProps={this.props}/>
+        <BackButton parentProps={this.props} color="white" />
       ),
     })
   }
@@ -58,6 +52,10 @@ export default class BookingScreen extends Component {
     let returnDate = new Date();
     returnDate.setDate(returnDate.getDate() + 7);
 
+    // minimum rent dat a= 1 day
+    let minimumDate = new Date();
+    minimumDate.setDate(minimumDate.getDate() + 1);
+
     // maximum rent date = 30 days
     let maximumDate = new Date();
     maximumDate.setDate(maximumDate.getDate() + 30);
@@ -70,7 +68,7 @@ export default class BookingScreen extends Component {
           mode='date'
           title={"Select return date"}
           date={returnDate}
-          minimumDate={new Date()} // minimum date = issue date
+          minimumDate={minimumDate}
           maximumDate={maximumDate}
           open={this.state.openPicker}
           onConfirm={(data) => {
