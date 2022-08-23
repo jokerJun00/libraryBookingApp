@@ -56,7 +56,7 @@ export default class UpdateScreen extends Component<Props> {
 
         if (formValid(this.state)) {
             console.log("successful submiting")
-            this._insert();
+            this._update();
         } else {
             Alert.alert("FORM INVALID\nPlease Fill up the form.");
         }
