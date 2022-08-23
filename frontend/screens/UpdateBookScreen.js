@@ -169,9 +169,7 @@ export default class UpdateScreen extends Component<Props> {
 const styles = StyleSheet.create({
     container: {
         heigth: '70%',
-        paddingRight: 20,
-        paddingTop:20,
-        paddingBottom:20,
+        paddingHorizontal: 10,
         backgroundColor: '#fff',
     },
     SectionContainer: {
