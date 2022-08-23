@@ -79,6 +79,7 @@ export default class BookingScreen extends Component {
             this.setState({
               returnDate: returnDate,
               openPicker: false,
+              //rentSuccess: true,
             })
           }}
           onCancel={() => {
@@ -174,13 +175,13 @@ export default class BookingScreen extends Component {
           </View>
 
           <View style={{height: '20%'}}></View>
-
           <TouchableOpacity 
             style={styles.confirmButton}
             onPress={() => {
               // develop logic to check if the data create successfully or not here
               this.setState( {
                 openDialog: true,
+                
                 // rentSuccess: true / false,
               })
             }}

@@ -20,10 +20,12 @@ const actions = [
   {
     text: "Edit",
     name: "edit",
+    icon: require('../../assets/icons/edit_icon.png'),
     position: 1,
   },
   {
     text: "Delete",
+    icon: require('../../assets/icons/delete_icon.jpg'),
     name: "delete",
     position: 2,
   },
@@ -100,7 +102,6 @@ export default class BookDetailScreen extends Component {
                     });
                   }}
                 />
-
         </View>
       )
     })
@@ -115,6 +116,7 @@ export default class BookDetailScreen extends Component {
 
 
   render() {
+    console.log(this.state.book);
     return (
       <View style={styles.container}>
         <Image
