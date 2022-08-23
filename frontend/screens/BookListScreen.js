@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, Image, Button} from 'react-native';
+import {View, Text, StyleSheet, Image, Button, TouchableNativeFeedbackBase, TouchableOpacity,} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {FloatingAction} from 'react-native-floating-action';
 
@@ -113,7 +113,20 @@ export default class BookListScreen extends Component {
               <View style={styles.columnContainer}>
                 <Text style={styles.itemTitle}>{item.Title}{'\n'}</Text>
                 <Text style={styles.itemSubtitle}>{item.Author}{'\n'}</Text>
-                <Button
+                <TouchableOpacity
+                  style={styles.button}
+                  onPress={() => {
+                    this.props.navigation.navigate('BookDetail', {
+                      book:item,
+                      id: item.ID,
+                      headerTitle: item.Title,
+                      refresh: this._query,
+                    });
+                  }}
+                >
+                  <Text style={styles.buttonText}>Book Detail</Text>
+                </TouchableOpacity>
+                {/* <Button
                   title="Book Detail"
                   onPress={() => {
                     this.props.navigation.navigate('BookDetail', {
@@ -123,7 +136,7 @@ export default class BookListScreen extends Component {
                       refresh: this._query,
                     });
                   }}
-                />
+                /> */}
               </View>
             </View>
           )}
@@ -162,8 +175,17 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: -30,
   },
-  buttons: {
-    
+  button: {
+    width: 130,
+    height: 40,
+    backgroundColor: '#607EAA',
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  buttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
   },
   item: {
     flexDirection: 'row',

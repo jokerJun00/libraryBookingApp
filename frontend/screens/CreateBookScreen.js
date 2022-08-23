@@ -141,6 +141,7 @@ export default class CreateScreen extends ValidationComponent {
     return (
       <View style={styles.container}>
         <ScrollView>
+
           <View>
             <InputWithLabel
               className={formErrors.Img.length > 0 ? "error" : null}
@@ -249,6 +250,7 @@ export default class CreateScreen extends ValidationComponent {
             <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>
           <View style={{ heigth: 100 }}></View>
+
         </ScrollView>
       </View>
     );
@@ -259,9 +261,9 @@ const styles = StyleSheet.create({
 
   container: {
     heigth: '70%',
-    paddingRight: 20,
-    paddingTop: 20,
-    paddingBottom: 20,
+
+    paddingHorizontal: 10,
+
     backgroundColor: '#fff',
   },
   SectionContainer: {

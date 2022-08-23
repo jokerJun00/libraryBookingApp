@@ -6,10 +6,10 @@ import {
   Image,
   TouchableNativeFeedbackBase, 
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-date-picker';
-import Dialog, { DialogTitle, DialogFooter, DialogButton, DiaglogContent, DialogContent } from 'react-native-popup-dialog';
 
 import BackButton from '../components/BackButton';
 
@@ -89,41 +89,6 @@ export default class BookingScreen extends Component {
           }}
         />
 
-        {/* diaglog */}
-        <Dialog
-          visible={this.state.openDialog}
-          dialogTitle={
-            <DialogTitle 
-              title={ this.state.rentSuccess ? "You successfully rent the book!" : "Something went wrong!"} 
-            />
-          }
-          footer={
-            <DialogFooter>
-              <DialogButton
-                text="OK"
-                onPress={() => {
-                  this.setState({
-                    openDialog: false,
-                  })
-                }}
-              />
-            </DialogFooter>
-          }
-          onTouchOutside={() => {
-            this.setState({
-              openDialog: false,
-            });
-          }}
-        >
-          <DialogContent>
-            <Text>{
-              this.state.rentSuccess 
-              ? "You action has been record."
-              : "Maximum rent date is 30 days.\nMore than 30 days is not acceptable"
-            }</Text>
-          </DialogContent>
-        </Dialog>
-
         {/* book image  */}
         <Image
           style={styles.image}
@@ -140,7 +105,7 @@ export default class BookingScreen extends Component {
         <View style={styles.bookingDetailSection}>
           <Text style={styles.bookTitle}>{this.state.book.Title}</Text>
           
-          <View style={{height: 40}}></View>
+          <View style={{height: 30}}></View>
 
           {/* issue date */}
           <View style={styles.dateSection}>
@@ -153,7 +118,7 @@ export default class BookingScreen extends Component {
             </View>
           </View>
 
-          <View style={{height: 40}}></View>
+          <View style={{height: 30}}></View>
 
           {/* return date  */}
           <View style={styles.dateSection}>
@@ -174,16 +139,26 @@ export default class BookingScreen extends Component {
             </View>
           </View>
 
-          <View style={{height: '20%'}}></View>
+
+          <View style={{height: '10%'}}></View>
+
+
           <TouchableOpacity 
             style={styles.confirmButton}
             onPress={() => {
               // develop logic to check if the data create successfully or not here
-              this.setState( {
-                openDialog: true,
-                
-                // rentSuccess: true / false,
-              })
+
+              Alert.alert( 
+                this.state.rentSuccess ? 'You have rent the book' : 'Something went wrong', 
+                this.state.rentSuccess ? 'You booking has been recorded' : 'Please try again', 
+                [{ 
+                  text: 'Close', 
+                  onPress: () => { 
+                    // fill in the rent function here
+                  },
+                }]
+              );
+
             }}
           >
             <Text style={styles.buttonText}>Confirm My Rent</Text>
@@ -200,13 +175,12 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   container: {
-    backgroundColor: '#F9F5EB',
+    backgroundColor: '#fff',
     flex: 1,
   },
   image: {
     width: '100%',
-    height: 300,
-
+    height: 400,
   },
   backButton: {
     width: '100%',
@@ -214,8 +188,8 @@ const styles = StyleSheet.create({
     top: 20,
   },
   bookingDetailSection: {
-    backgroundColor: '#F9F5EB',
-    height: '60%',
+    backgroundColor: '#fff',
+    height: '50%',
     width: '100%',
     position: 'absolute',
     zIndex: 1,
@@ -223,10 +197,20 @@ const styles = StyleSheet.create({
     borderTopLeftRadius: 15,
     borderTopRightRadius: 15,
     padding: 20,
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 12,
+    },
+    shadowOpacity: 0.58,
+    shadowRadius: 16.00,
+
+    elevation: 24,
   },
   bookTitle: {
     fontSize: 35,
     fontFamily: 'PlayfairDisplay-Bold',
+    color: '#000'
   },
   dateSection: {
     flexDirection: 'row',

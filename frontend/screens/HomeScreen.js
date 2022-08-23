@@ -25,7 +25,24 @@ export default class HomeScreen extends Component {
     return(
       <Drawer.Navigator 
         drawerContent={props => <DrawerComponent {...props} />}
-        screenOptions= {styles.drawerScreenOptions}
+        screenOptions= {{
+          drawerActiveTintColor: '#fff',
+          drawerActiveBackgroundColor: '#1C3879',
+          drawerStyle: {
+            backgroundColor: '#fff',
+          },
+          drawerLabelStyle: {
+            marginLeft: -24,
+          },
+          headerTitleStyle: {
+            fontSize: 30,
+            fontFamily: 'PlayfairDisplay-Bold',
+          },
+          headerStyle: {
+            backgroundColor: '#1C3879',
+          },
+          headerTintColor: '#fff',
+        }}
       >
         <Drawer.Screen
           name='BookList'
@@ -37,7 +54,7 @@ export default class HomeScreen extends Component {
           }}
         />
         <Drawer.Screen
-          name='UserProfile'
+          name='Profile'
           component={UserProfileScreen}
           options={{
             drawerIcon: ({color}) => (
@@ -49,27 +66,6 @@ export default class HomeScreen extends Component {
     );
   }
 }
-
-const styles = StyleSheet.create({
-  drawerScreenOptions: {
-    drawerActiveTintColor: '#EAE3D2',
-    drawerActiveBackgroundColor: '#1C3879',
-    drawerStyle: {
-      backgroundColor: '#F9F5EB',
-    },
-    drawerLabelStyle: {
-      marginLeft: -24,
-    },
-    headerTitleStyle: {
-      fontSize: 30,
-      fontFamily: 'PlayfairDisplay-Bold',
-    },
-    headerStyle: {
-      backgroundColor: '#1C3879',
-    },
-    headerTintColor: '#EAE3D2',
-  },
-})
 
 class DrawerComponent extends Component {
   render() {
@@ -87,7 +83,7 @@ class DrawerComponent extends Component {
               />
             </View>
 
-            <Text style={drawerStyles.userName}>User Name</Text>
+            <Text style={drawerStyles.userName}>Lim Choon Kiat</Text>
           </View>
 
           <View style={drawerStyles.drawerItemList}>
@@ -116,7 +112,7 @@ const drawerStyles = StyleSheet.create({
   imageBackground: {
     width: 70,
     height: 70,
-    backgroundColor: '#EAE3D2',
+    backgroundColor: '#fff',
     padding: 15,
     borderRadius: 35,
     alignItems: 'center',
@@ -130,11 +126,11 @@ const drawerStyles = StyleSheet.create({
   userName: {
     fontSize: 18,
     fontFamily: 'PlayfairDisplay-Bold',
-    color: '#F9F5EB',
+    color: '#fff',
     textAlign: 'center',
   },
   drawerItemList: {
-    backgroundColor: '#F9F5EB',
+    backgroundColor: '#fff',
     flex: 1,
     paddingTop: 10,
   },

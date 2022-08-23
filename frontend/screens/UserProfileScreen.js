@@ -75,7 +75,7 @@ const userDetailTextStyles = StyleSheet.create({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#F9F5EB',
+    backgroundColor: '#fff',
     paddingTop: 50,
     paddingLeft: 30,
     paddingRight: 30,
