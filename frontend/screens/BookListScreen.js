@@ -14,6 +14,8 @@ const actions = [
   },
 ];
 
+
+
 const Separator = () => (
   <View style={styles.separator} />
 );
@@ -34,6 +36,8 @@ export default class BookListScreen extends Component {
       this.errorCallback,
     );
   }
+
+ 
 
   componentDidMount() {
     this._databasePrepare();

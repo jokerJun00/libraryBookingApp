@@ -88,6 +88,7 @@ export default class UpdateScreen extends Component<Props> {
             case 'Price':
                 formErrors.Price =
                     value === '' ? "Field cannot be empty" : "";
+                    //value.isNumber()?"Price must be a number" : "";
                 break;
             default:
                 break;

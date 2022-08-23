@@ -25,7 +25,6 @@ const actions = [
   },
   {
     text: "Delete",
-    icon: require('../../assets/icons/delete_icon.jpg'),
     name: "delete",
     icon: require('../../assets/icons/delete_icon.jpg'),
     position: 2,
@@ -50,6 +49,7 @@ export default class BookDetailScreen extends Component {
     );
     this._queryByID = this._queryByID.bind(this);
   }
+
 
   _queryByID() {
     this.db.transaction(tx =>

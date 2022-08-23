@@ -219,7 +219,7 @@ export default class CreateScreen extends ValidationComponent {
               textInputStyle={styles.TextInput}
               placeholder={'Type Book Price Here'}
               label={'Price'}
-              value={this.state.Price}
+              value={this.state.Price.toString()}
               onChangeText={Price => {
                 this.handleChange(Price, 'Price');
                 this.setState({ Price });
