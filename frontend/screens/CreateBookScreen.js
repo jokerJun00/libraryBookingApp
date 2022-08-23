@@ -7,7 +7,7 @@ import BackButton from '../components/BackButton';
 let common = require('../BookStatus');
 let SQLite = require('react-native-sqlite-storage');
 
-export default class CreateScreen extends Component<Props> {
+export default class CreateScreen extends Component<Props>{
   constructor(props) {
     super(props);
     this.state = {

@@ -26,6 +26,8 @@ import BookDetailScreen from './frontend/screens/BookDetailScreen';
 import UserProfileScreen from './frontend/screens/UserProfileScreen';
 import CreateBookScreen from './frontend/screens/CreateBookScreen';
 import UpdateBookScene from './frontend/screens/UpdateBookScreen';
+import SearchBookScreen from './frontend/screens/SearchBookScreen';
+import SearchDetailScreen from './frontend/screens/SearchDetailScreen';
 
 const Stack = createStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -62,6 +64,12 @@ export default class App extends Component {
           <Stack.Screen
             name='UpdateBook'
             component={UpdateBookScene}></Stack.Screen>
+          <Stack.Screen
+            name='SearchBook'
+            component={SearchBookScreen}></Stack.Screen>
+          <Stack.Screen
+            name='SearchDetail'
+            component={SearchDetailScreen}></Stack.Screen>
           <Stack.Screen
             name='Booking'
             component={BookingScreen}
