@@ -55,7 +55,6 @@ export default class SearchBookScreen extends Component<Props> {
       });
   }
   render() {
-    console.log(this.state.keyword);
     return (
       <>
         <View style={{flexDirection: 'row'}}>

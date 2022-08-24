@@ -3,7 +3,7 @@ import {StyleSheet, TextInput, Text, View, ScrollView, TouchableOpacity, Touchab
 import {InputWithLabel, PickerWithLabel, AppButton} from '../components/UI';
 import CheckBox from '@react-native-community/checkbox';
 import BackButton from '../components/BackButton';
-import ValidationComponent from 'react-native-form-validator'
+
 
 let common = require('../BookStatus');
 let SQLite = require('react-native-sqlite-storage');
