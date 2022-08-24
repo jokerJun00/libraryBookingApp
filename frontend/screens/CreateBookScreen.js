@@ -135,7 +135,7 @@ export default class CreateScreen extends Component<Props>{
       ]);
     });
 
-    this.props.route.params.refresh();
+    //this.props.route.params.refresh();
     this.props.navigation.goBack();
   }
 

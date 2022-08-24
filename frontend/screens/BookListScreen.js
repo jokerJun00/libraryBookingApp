@@ -55,7 +55,7 @@ export default class BookListScreen extends Component {
   _databasePrepare() {
     this.db.transaction(tx => {
       tx.executeSql(
-        'CREATE TABLE IF NOT EXISTS book(ID INTEGER PRIMARY KEY AUTOINCREMENT, Img VARCHAR(255), Title VARCHAR(255), Author VARCHAR(255), Description VARCHAR(255), Price INTEGER, Status VARCHAR(255))',
+        'CREATE TABLE IF NOT EXISTS book(ID INTEGER PRIMARY KEY AUTOINCREMENT, Img VARCHAR(255), Title VARCHAR(255) UNIQUE, Author VARCHAR(255), Description VARCHAR(255), Price INTEGER, Status VARCHAR(255))',
         [],
         (sqlTxn, res) => {
           console.log('book table ready');
