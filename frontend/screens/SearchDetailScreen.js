@@ -6,9 +6,7 @@ import Clipboard from '@react-native-community/clipboard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {FloatingAction} from 'react-native-floating-action';
 
-
 let SQLite = require('react-native-sqlite-storage');
-
 
 const actions = [
   {
@@ -19,19 +17,13 @@ const actions = [
   },
 ];
 
-
 export default class SearchDetailScreen extends Component {
-
-
-
-
   constructor(props) {
     super(props);
     this.state = {
       volumeInfo: this.props.route.params.volumeInfo,
     };
   }
-
 
   componentDidMount() {
     this.props.navigation.setOptions({
@@ -43,30 +35,29 @@ export default class SearchDetailScreen extends Component {
   }
 
   render() {
-
     try{
       var authors = this.state.volumeInfo.authors.join(',\n');
-
     }catch(error){
       var authors = "No Author";
       console.log(error);
     };
+
     try{
       var description = this.state.volumeInfo.description.toString();
     }catch(error){
       var description = 'No Description';
       console.log(error);
     };
+
     try{
       var image = this.state.volumeInfo.imageLinks.thumbnail;
-      
     }catch(error){
       var image = '..\..\assets\images\books-images\default.png';
       console.log(error);
     };
     console.log(image);
+
     return(
-      
       <View style={{ flex: 1, margin: 10 }}>
         <Image
           style={styles.image}
@@ -97,7 +88,6 @@ export default class SearchDetailScreen extends Component {
                 Author:authors,
                 Description:description,
                 refresh: this._query,
-
               });
             }}
           />
@@ -114,15 +104,12 @@ export default class SearchDetailScreen extends Component {
           onPress={() => { Clipboard.setString(description); alert('Copied into clipboard!') }}>
           <Ionicons name='copy-outline' size={20} />
         </TouchableOpacity>
-       
       </View>
-      
     );
   }
 }
 
 const styles = StyleSheet.create({
-
   copyButton: {
     width: 50,
     height: 30,

@@ -4,10 +4,8 @@ import {InputWithLabel, PickerWithLabel, AppButton} from '../components/UI';
 import CheckBox from '@react-native-community/checkbox';
 import BackButton from '../components/BackButton';
 
-
 let common = require('../BookStatus');
 let SQLite = require('react-native-sqlite-storage');
-
 
 const formValid = ({ formErrors, ...rest }) => {
   let valid = true;
@@ -25,9 +23,7 @@ const formValid = ({ formErrors, ...rest }) => {
   return valid;
 };
 
-
 export default class CreateScreen extends Component<Props>{
-
   constructor(props) {
     super(props);
     this.state = {
@@ -54,8 +50,6 @@ export default class CreateScreen extends Component<Props>{
     );
   }
 
-
-
   handleSubmit = summit => {
     summit.preventDefault();
 
@@ -68,9 +62,7 @@ export default class CreateScreen extends Component<Props>{
   };
 
   handleChange = (value, field) => {
-
     let formErrors = { ...this.state.formErrors };
-
 
     switch (field) {
       case 'Img':
@@ -98,7 +90,6 @@ export default class CreateScreen extends Component<Props>{
     }
     console.log(formErrors);
     this.setState({ formErrors });
-
   }
 
   componentDidMount() {
@@ -138,6 +129,7 @@ export default class CreateScreen extends Component<Props>{
   openDb() {
     console.log('Database opened');
   }
+
   errorDb(err) {
     console.log('SQL Error: ' + err);
   }
@@ -164,6 +156,7 @@ export default class CreateScreen extends Component<Props>{
             />
             {formErrors.Img.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Img}</Text>)}
           </View>
+          
           <View>
             <InputWithLabel
               className={formErrors.Title.length > 0 ? "error" : null}
@@ -181,6 +174,7 @@ export default class CreateScreen extends Component<Props>{
             />
             {formErrors.Title.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Title}</Text>)}
           </View>
+
           <View>
             <InputWithLabel
               className={formErrors.Author.length > 0 ? "error" : null}
@@ -198,6 +192,7 @@ export default class CreateScreen extends Component<Props>{
             />
             {formErrors.Author.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Author}</Text>)}
           </View>
+
           <View>
             <InputWithLabel
               className={formErrors.Description.length > 0 ? "error" : null}
@@ -216,6 +211,7 @@ export default class CreateScreen extends Component<Props>{
             />
             {formErrors.Description.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Description}</Text>)}
           </View>
+
           <View>
             <InputWithLabel
               className={formErrors.Price.length > 0 ? "error" : null}
@@ -234,29 +230,26 @@ export default class CreateScreen extends Component<Props>{
             />
             {formErrors.Price.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Price}</Text>)}
           </View>
+
           <View style={styles.checkBoxContainer}>
             <CheckBox
               value={this.state.Status == 'Available' ? true : false}
               tintColors={{ true: '#1C3879', false: '#C21010' }}
               onValueChange={isAvailable => {
-
                 this.setState({ isAvailable });
-
-
                 this.setState({
                   Status: this.state.isAvailable == false ? 'Not Available' : 'Available',
                 })
               }}
             />
-
             <Text style={{ color: '#1C3879' }}>Set this book to available</Text>
           </View>
+
           <View style={{ height: 50 }}></View>
           <TouchableOpacity onPress={this.handleSubmit} style={styles.button}>
             <Text style={styles.buttonText}>Save</Text>
           </TouchableOpacity>
           <View style={{ heigth: 100 }}></View>
-
         </ScrollView>
       </View>
     );

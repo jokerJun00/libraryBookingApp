@@ -1,32 +1,28 @@
 import React, { Component } from 'react';
-import { 
-  StyleSheet, 
-  Text, 
-  View, 
-  Image,
-  TouchableNativeFeedbackBase, 
-  TouchableOpacity,
-  Alert,
-} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableNativeFeedbackBase, TouchableOpacity, Alert} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import DatePicker from 'react-native-date-picker';
-
+import DatePicker from 'react-native-date-picker'
 import BackButton from '../components/BackButton';
+let SQLite = require('react-native-sqlite-storage');
 
 export default class BookingScreen extends Component {
   constructor(props) {
     super(props);
-    
     let issueDate = this.formatDate(new Date());
+    this._update = this._update.bind(this);
 
     this.state = {
       issueDate: issueDate,
       returnDate: "select date",
       openPicker: false,
-      openDialog: false,
-      rentSuccess: false,
       book:this.props.route.params.book,
     }
+
+    this.db = SQLite.openDatabase(
+        { name: 'bookdb'},
+        this.openDb,
+        this.errorDb,
+    );
   }
 
   componentDidMount() {
@@ -45,6 +41,25 @@ export default class BookingScreen extends Component {
     let month = dateObject.getMonth() + 1;
     let year = dateObject.getFullYear();
     return date + "/" + month + "/" + year;
+  }
+
+  _update() {
+    this.db.transaction(tx => {
+        tx.executeSql('UPDATE book SET Status=? WHERE id = ?', [
+            "Not Available",
+            this.state.book.ID,
+        ]);
+    });
+    this.props.route.params.refresh();
+    this.props.route.params.homeRefresh();
+  }
+
+  openDb() {
+    console.log('Database opened');
+  }
+
+  errorDb(err) {
+      console.log('SQL Error: ' + err);
   }
 
   render() {
@@ -72,8 +87,8 @@ export default class BookingScreen extends Component {
           maximumDate={maximumDate}
           open={this.state.openPicker}
           onConfirm={(data) => {
+            console.log(data);
             let returnDate = this.formatDate(data);
-            
             this.setState({
               returnDate: returnDate,
               openPicker: false,
@@ -93,22 +108,19 @@ export default class BookingScreen extends Component {
           source={{uri:this.state.book.Img}}
         />
 
-        <TouchableOpacity 
-          style={styles.backButton}
-        >
+        <TouchableOpacity style={styles.backButton}>
           <Ionicons name='arrow-back-outline' color={'#fff'}/>
         </TouchableOpacity>
 
         {/* booking detail section */}
         <View style={styles.bookingDetailSection}>
           <Text style={styles.bookTitle}>{this.state.book.Title}</Text>
-          
+
           <View style={{height: 30}}></View>
 
           {/* issue date */}
           <View style={styles.dateSection}>
             <Text style={styles.text}>Issue date:</Text>
-
             <View style={styles.selectSection}>
               <Text style={styles.text}>{this.state.issueDate}</Text>
               <View style={{width: 15}}></View>
@@ -121,7 +133,6 @@ export default class BookingScreen extends Component {
           {/* return date  */}
           <View style={styles.dateSection}>
             <Text style={styles.text}>Return date:</Text>
-
             <View style={styles.selectSection}>
               <Text style={[styles.text, {color: '#1C3879'}]}>{this.state.returnDate}</Text>
               <View style={{width: 15}}></View>
@@ -137,28 +148,27 @@ export default class BookingScreen extends Component {
             </View>
           </View>
 
-
           <View style={{height: '10%'}}></View>
-
 
           <TouchableOpacity 
             style={styles.confirmButton}
             onPress={() => {
               // develop logic to check if the data create successfully or not here
-
-              Alert.alert( 
-                this.state.rentSuccess ? 'You have rent the book' : 'Something went wrong', 
-                this.state.rentSuccess ? 'You booking has been recorded' : 'Please try again', 
-                [{ 
-                  text: 'Close', 
-                  onPress: () => { 
-                    // fill in the rent function here
-                  },
-                }]
-              );
-
-            }}
-          >
+              if(this.state.returnDate=="select date"){
+                Alert.alert("Please choose the return date!");
+              }
+              else if(this.state.returnDate < this.state.issueDate ){
+                Alert.alert("The return date must after issue date!");
+              }
+              else if(this.state.returnDate == this.state.issueDate ){
+                Alert.alert("The return date cannot same with issue date!");
+              }
+              else if(this.state.issueDate < this.state.returnDate ){
+                this._update();
+                Alert.alert("You have rent successfully!");
+                this.props.navigation.goBack();
+              }
+          }}>
             <Text style={styles.buttonText}>Confirm My Rent</Text>
           </TouchableOpacity>    
         </View>

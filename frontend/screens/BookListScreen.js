@@ -14,8 +14,6 @@ const actions = [
   },
 ];
 
-
-
 const Separator = () => (
   <View style={styles.separator} />
 );
@@ -23,11 +21,9 @@ const Separator = () => (
 export default class BookListScreen extends Component { 
   constructor(props) {
     super(props);
-
     this.state = {
       books: [],
     };
-
     this._query = this._query.bind(this);
     this._databasePrepare = this._databasePrepare.bind(this);
     this.db = SQLite.openDatabase(
@@ -36,8 +32,6 @@ export default class BookListScreen extends Component {
       this.errorCallback,
     );
   }
-
- 
 
   componentDidMount() {
     this._databasePrepare();
@@ -170,9 +164,6 @@ export default class BookListScreen extends Component {
     );
   }
 }
-
-
-
 
 const styles = StyleSheet.create({
   container: {

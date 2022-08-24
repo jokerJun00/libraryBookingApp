@@ -1,15 +1,5 @@
 import React, { Component } from 'react';
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-  Image,
-  TouchableNativeFeedbackBase,
-  TouchableOpacity,
-  Button,
-  Alert,
-} from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, TouchableNativeFeedbackBase, TouchableOpacity, Button, Alert } from 'react-native';
 import BackButton from '../components/BackButton';
 import { FloatingAction } from 'react-native-floating-action';
 import { Floatingbutt } from '../UI';
@@ -29,17 +19,13 @@ const actions = [
     icon: require('../../assets/icons/delete_icon.jpg'),
     position: 2,
   },
-
-
 ];
 
 export default class BookDetailScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
       book:this.props.route.params.book,
-
     };
     console.log(this.state.bookID);
     this.db = SQLite.openDatabase(
@@ -49,7 +35,6 @@ export default class BookDetailScreen extends Component {
     );
     this._queryByID = this._queryByID.bind(this);
   }
-
 
   _queryByID() {
     this.db.transaction(tx =>
@@ -91,18 +76,18 @@ export default class BookDetailScreen extends Component {
         <BackButton parentProps={this.props} color="white"/>
       ),
       headerRight: () => (
-        <View style={headerStyles.rentButton}>
-
+          <View style={headerStyles.rentButton}>
           <TouchableOpacity
             onPress={() => {
               this.props.navigation.navigate('Booking', {
                 book:this.state.book,
+                refresh: this._queryByID,
+                homeRefresh: this.props.route.params.refresh,
               });
             }}
           >
             <Text style={headerStyles.rentButtonText}>Rent</Text>
           </TouchableOpacity>
-
         </View>
       )
     })
@@ -111,10 +96,10 @@ export default class BookDetailScreen extends Component {
   openCallback() {
     console.log('database opened successfully');
   }
+
   errorCallback(err) {
     console.log('error in opening database: ' + err);
   }
-
 
   render() {
     console.log(this.state.book);
@@ -160,18 +145,15 @@ export default class BookDetailScreen extends Component {
                   case 'edit':
                     this.backgroundColor = '#449d44';
                     console.log(`selected button: edit button pressed`);
-
                     this.props.navigation.navigate('UpdateBook', {
                       book : this.state.book,
                       refresh: this._queryByID,
                       homeRefresh: this.props.route.params.refresh,
                     });
-                    
                     break;
                   case 'delete':
                     console.log(`selected button: delete button pressed`);
                     this._delete();
-
                     break;
                   default:
                     console.log(`selected button: wtf button pressed`);

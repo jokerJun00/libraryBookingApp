@@ -1,20 +1,10 @@
 import React, { Component } from 'react';
-import { 
-  StyleSheet, 
-  ScrollView, 
-  View,
-  Text,
-  Image, 
-  SafeAreaView,
-  TouchableNativeFeedbackBase, 
-  TouchableOpacity 
-} from 'react-native';
+import { StyleSheet, ScrollView, View,Text,Image, SafeAreaView,TouchableNativeFeedbackBase, TouchableOpacity} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { NavigationContainer } from '@react-navigation/native';
 import { createDrawerNavigator, DrawerContentScrollView, DrawerItemList } from '@react-navigation/drawer';
 import { back } from 'react-native/Libraries/Animated/Easing';
 import 'react-native-gesture-handler';
-
 import BookListScreen from './BookListScreen';
 import UserProfileScreen from './UserProfileScreen';
 import SearchBookInfo from './SearchBookScreen';
@@ -92,14 +82,12 @@ class DrawerComponent extends Component {
                 source={require('../../assets/images/profile-picture.png')}
               />
             </View>
-
             <Text style={drawerStyles.userName}>Lim Choon Kiat</Text>
           </View>
 
           <View style={drawerStyles.drawerItemList}>
             <DrawerItemList {...this.props} />
           </View>
-
         </DrawerContentScrollView>
       </View>
     );

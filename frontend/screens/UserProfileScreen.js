@@ -15,10 +15,7 @@ export default class UserProfileScreen extends Component {
     return(
       <View style={styles.container}>
         <View style={styles.imageBackground}>
-          <Image
-            style={styles.image}
-            source={require('../../assets/images/profile-picture.png')}
-          />
+          <Image style={styles.image} source={require('../../assets/images/profile-picture.png')} />
         </View>
 
         <View style={{height: 10}}></View>
@@ -26,15 +23,8 @@ export default class UserProfileScreen extends Component {
         <View style={{height: 30}}></View>
 
         {/* user detail section */}
-        <UserDetailText
-          title="User Name"
-          content={this.state.userName}
-        />
-
-        <UserDetailText
-          title="Email"
-          content={this.state.email}
-        />
+        <UserDetailText title="User Name" content={this.state.userName} />
+        <UserDetailText title="Email" content={this.state.email}/>
       </View>
     );
   }

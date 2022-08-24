@@ -1,14 +1,5 @@
 import React, {Component} from 'react';
-import {
-  Alert,
-  FlatList,
-  StyleSheet,
-  TouchableHighlight,
-  Text,
-  View,
-  TextInput,
-  TouchableNativeFeedback,
-} from 'react-native';
+import {Alert,FlatList,StyleSheet,TouchableHighlight,Text,View,TextInput,TouchableNativeFeedback,} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 const actions = [
   {
@@ -31,9 +22,7 @@ export default class SearchBookScreen extends Component<Props> {
     this._load = this._load.bind(this);
   }
   _load() {
-    let url =
-      'https://www.googleapis.com/books/v1/volumes?q=' + this.state.keyword;
-
+    let url ='https://www.googleapis.com/books/v1/volumes?q=' + this.state.keyword;
     this.setState({isFetching: true});
     fetch(url)
       .then(response => {
@@ -45,9 +34,7 @@ export default class SearchBookScreen extends Component<Props> {
       })
       .then(response => {
         var volumeInf = response.items.map(o => ({volumeInfo: o.volumeInfo}));
-
         this.setState({Data: volumeInf});
-
         this.setState({isFetching: false});
       })
       .catch(error => {
