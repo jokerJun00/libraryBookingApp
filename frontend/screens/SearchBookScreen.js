@@ -61,7 +61,11 @@ export default class SearchBookScreen extends Component<Props> {
           <Ionicons size={55} name="search-outline"></Ionicons>
           <TextInput
             style={{flex: 2, textAlignVertical: 'center'}}
-            onChangeText={keyword => this.setState({keyword})}
+            onChangeText={
+              keyword => this.setState({keyword},
+              keyword? this._load : () =>{},
+              
+              )}
             placeholder="Enter keyword"></TextInput>
           <TouchableNativeFeedback
             background={TouchableNativeFeedback.Ripple('lightgrey', true, 60)}

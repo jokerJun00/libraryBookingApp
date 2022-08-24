@@ -54,20 +54,14 @@ export default class CreateScreen extends Component<Props>{
     );
   }
 
-  _query() {
-    this.db.transaction(tx =>
-      tx.executeSql('SELECT * FROM book ORDER BY Title', [], (tx, results) =>
-        this.setState({books: results.rows.raw()}),
-      ),
-    );
-  }
+
 
   handleSubmit = summit => {
     summit.preventDefault();
 
     if (formValid(this.state)) {
-      console.log("successful submiting")
       this._insert();
+      console.log("successful submiting")
     } else {
       Alert.alert("FORM INVALID\nPlease Fill up the form.");
     }
@@ -132,10 +126,12 @@ export default class CreateScreen extends Component<Props>{
         this.state.Description,
         this.state.Price,
         this.state.Status,
-      ]);
+      ],error => {
+        console.log('error on creating table ' + error.message);
+      },);
     });
 
-    //this.props.route.params.refresh();
+    this.props.route.params.refresh();
     this.props.navigation.goBack();
   }
 
