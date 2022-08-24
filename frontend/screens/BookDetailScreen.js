@@ -74,8 +74,30 @@ export default class BookDetailScreen extends Component {
       headerTitle: this.state.book.Title,
       headerLeft: () => (
         <BackButton parentProps={this.props} color="white"/>
-      ),
-      headerRight: () => (
+      )
+    })
+    if(this.state.book.Status=="Not Available"){
+      this.props.navigation.setOptions({
+        headerRight: () => (
+          <View style={headerStyles.rentButton}>
+          <TouchableOpacity
+            onPress={() => {
+              this.props.navigation.navigate('BookList', {
+                book:this.state.book,
+                refresh: this._queryByID,
+                homeRefresh: this.props.route.params.refresh,
+              });
+            }}
+          >
+            <Text style={headerStyles.rentButtonText}>Rent</Text>
+          </TouchableOpacity>
+        </View>
+        )
+      })
+    }
+    else if(this.state.book.Status=="Available"){
+      this.props.navigation.setOptions({
+        headerRight: () => (
           <View style={headerStyles.rentButton}>
           <TouchableOpacity
             onPress={() => {
@@ -89,8 +111,9 @@ export default class BookDetailScreen extends Component {
             <Text style={headerStyles.rentButtonText}>Rent</Text>
           </TouchableOpacity>
         </View>
-      )
-    })
+        )
+      })
+    }
   }
 
   openCallback() {
