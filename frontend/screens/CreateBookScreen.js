@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import {StyleSheet, TextInput, Text, View, ScrollView, TouchableOpacity, TouchableNativeFeedbackBase, Image } from 'react-native';
+import {StyleSheet, TextInput, Text, View, ScrollView, TouchableOpacity, TouchableNativeFeedbackBase, Image ,Alert} from 'react-native';
 import {InputWithLabel, PickerWithLabel, AppButton} from '../components/UI';
 import CheckBox from '@react-native-community/checkbox';
 import BackButton from '../components/BackButton';
@@ -31,10 +31,10 @@ export default class CreateScreen extends Component<Props>{
   constructor(props) {
     super(props);
     this.state = {
-      Img: '',
-      Title: '',
-      Author: '',
-      Description: '',
+      Img: this.props.route.params.Image,
+      Title: this.props.route.params.Title,
+      Author: this.props.route.params.Author,
+      Description: this.props.route.params.Description,
       Price: '',
       Status: 'Available',
       isAvailable: true,
@@ -54,6 +54,13 @@ export default class CreateScreen extends Component<Props>{
     );
   }
 
+  _query() {
+    this.db.transaction(tx =>
+      tx.executeSql('SELECT * FROM book ORDER BY Title', [], (tx, results) =>
+        this.setState({books: results.rows.raw()}),
+      ),
+    );
+  }
 
   handleSubmit = summit => {
     summit.preventDefault();

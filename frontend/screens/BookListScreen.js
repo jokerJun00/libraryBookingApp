@@ -42,6 +42,14 @@ export default class BookListScreen extends Component {
   componentDidMount() {
     this._databasePrepare();
     this._query();
+    //this._droptable();
+  }
+
+  _droptable() {
+    this.db.transaction(tx =>
+      tx.executeSql('DROP TABLE book', [], 
+      ),
+    );
   }
 
   _databasePrepare() {
@@ -149,6 +157,10 @@ export default class BookListScreen extends Component {
             
             onPressItem={() => {
               this.props.navigation.navigate('CreateBook', {
+                Image:'',
+                Title:'',
+                Author:'',
+                Description:'',
                 refresh: this._query,
               });
             }}

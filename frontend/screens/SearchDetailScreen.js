@@ -4,14 +4,34 @@ import { InputWithLabel } from '../components/UI';
 import BackButton from '../components/BackButton';
 import Clipboard from '@react-native-community/clipboard';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import {FloatingAction} from 'react-native-floating-action';
+
+
+let SQLite = require('react-native-sqlite-storage');
+
+
+const actions = [
+  {
+    text: 'Add',
+    icon: require('../../assets/icons/add_icon.png'),
+    name: 'add',
+    position: 1,
+  },
+];
+
 
 export default class SearchDetailScreen extends Component {
+
+
+
+
   constructor(props) {
     super(props);
     this.state = {
       volumeInfo: this.props.route.params.volumeInfo,
     };
   }
+
 
   componentDidMount() {
     this.props.navigation.setOptions({
@@ -32,8 +52,7 @@ export default class SearchDetailScreen extends Component {
       console.log(error);
     };
     try{
-      var description = this.state.volumeInfo.description;
-      
+      var description = this.state.volumeInfo.description.toString();
     }catch(error){
       var description = 'No Description';
       console.log(error);
@@ -65,7 +84,24 @@ export default class SearchDetailScreen extends Component {
           onPress={() => { Clipboard.setString(authors); alert('Copied into clipboard!') }}>
           <Ionicons name='copy-outline' size={20} />
         </TouchableOpacity>
+        <View>
+          <FloatingAction
+            actions={actions}
+            overrideWithAction={true}
+            color={'#607EAA'}
+            
+            onPressItem={() => {
+              this.props.navigation.navigate('CreateBook', {
+                Image:image,
+                Title:this.state.volumeInfo.title,
+                Author:authors,
+                Description:description,
+                refresh: this._query,
 
+              });
+            }}
+          />
+        </View>
         <InputWithLabel
           textInputStyle={styles.input}
           textLabelStyle={styles.label}
@@ -78,7 +114,9 @@ export default class SearchDetailScreen extends Component {
           onPress={() => { Clipboard.setString(description); alert('Copied into clipboard!') }}>
           <Ionicons name='copy-outline' size={20} />
         </TouchableOpacity>
+       
       </View>
+      
     );
   }
 }

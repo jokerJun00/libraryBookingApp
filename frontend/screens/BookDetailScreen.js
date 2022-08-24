@@ -54,8 +54,6 @@ export default class BookDetailScreen extends Component {
   _queryByID() {
     this.db.transaction(tx =>
       tx.executeSql('SELECT * FROM book WHERE ID = ?', [this.state.book.ID], (tx, results) => {
-        console.log("queryBYId:" + results.rows.item(0).Title);
-        console.log("queryBYId:" + results.rows.length);
         if (results.rows.length) {
           this.setState({ book : results.rows.raw()[0]});
         }
