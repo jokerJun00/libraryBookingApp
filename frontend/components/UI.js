@@ -1,13 +1,6 @@
 import React, {Component} from 'react';
-import {
-  Platform,
-  View,
-  Text,
-  TextInput,
-  TouchableNativeFeedback,
-  StyleSheet,
-} from 'react-native';
-import {Picker} from '@react-native-picker/picker';
+import { Platform, View, Text, TextInput, TouchableNativeFeedback, StyleSheet } from 'react-native';
+import { Picker } from '@react-native-picker/picker';
 
 /**
  * InputWithLabel
@@ -15,11 +8,7 @@ import {Picker} from '@react-native-picker/picker';
 class InputWithLabel extends Component {
   constructor(props) {
     super(props);
-
-    this.orientation = this.props.orientation
-      ? this.props.orientation == 'horizontal'
-        ? 'row' : 'column'
-      : 'column';
+    this.orientation = this.props.orientation ? (this.props.orientation == 'horizontal' ? 'row' : 'column') : 'column';
   }
 
   render() {

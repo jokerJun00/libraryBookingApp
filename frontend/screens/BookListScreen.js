@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import {View, Text, StyleSheet, Image, Button, TouchableNativeFeedbackBase, TouchableOpacity,} from 'react-native';
-import {FlatList} from 'react-native-gesture-handler';
-import {FloatingAction} from 'react-native-floating-action';
+import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import { FlatList } from 'react-native-gesture-handler';
+import { FloatingAction } from 'react-native-floating-action';
 
 let SQLite = require('react-native-sqlite-storage');
 
@@ -13,10 +13,6 @@ const actions = [
     position: 1,
   },
 ];
-
-const Separator = () => (
-  <View style={styles.separator} />
-);
 
 export default class BookListScreen extends Component { 
   constructor(props) {
@@ -36,14 +32,6 @@ export default class BookListScreen extends Component {
   componentDidMount() {
     this._databasePrepare();
     this._query();
-    //this._droptable();
-  }
-
-  _droptable() {
-    this.db.transaction(tx =>
-      tx.executeSql('DROP TABLE book', [], 
-      ),
-    );
   }
 
   _databasePrepare() {
@@ -52,10 +40,10 @@ export default class BookListScreen extends Component {
         'CREATE TABLE IF NOT EXISTS book(ID INTEGER PRIMARY KEY AUTOINCREMENT, Img VARCHAR(255), Title VARCHAR(255) UNIQUE, Author VARCHAR(255), Description VARCHAR(255), Price INTEGER, Status VARCHAR(255))',
         [],
         (sqlTxn, res) => {
-          console.log('book table ready');
+          console.log('Book Table Ready');
         },
         error => {
-          console.log('error on creating table ' + error.message);
+          console.log('Error on Creating Table ' + error.message);
         },
       );
 
@@ -102,8 +90,7 @@ export default class BookListScreen extends Component {
     console.log('Error in opening the database: ' + err);
   }
 
-  render() {
-    console.log(this.state.books);
+  render(){
     return(
       <View style={styles.container}>
         <FlatList
@@ -112,10 +99,7 @@ export default class BookListScreen extends Component {
           showsVerticalScrollIndicator={true}
           renderItem={({item}) => (
             <View style={styles.item}>
-              <Image
-                style={styles.img}
-                source={{uri: item.Img }}
-              />
+              <Image style={styles.img} source={{uri: item.Img }}/>
               <View style={styles.columnContainer}>
                 <Text style={styles.itemTitle}>{item.Title}{'\n'}</Text>
                 <Text style={styles.itemSubtitle}>{item.Author}{'\n'}</Text>
@@ -123,7 +107,7 @@ export default class BookListScreen extends Component {
                   style={styles.button}
                   onPress={() => {
                     this.props.navigation.navigate('BookDetail', {
-                      book:item,
+                      book: item,
                       id: item.ID,
                       headerTitle: item.Title,
                       refresh: this._query,

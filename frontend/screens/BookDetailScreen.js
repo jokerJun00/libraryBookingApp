@@ -76,6 +76,7 @@ export default class BookDetailScreen extends Component {
         <BackButton parentProps={this.props} color="white"/>
       )
     })
+    
     if(this.state.book.Status=="Not Available"){
       this.props.navigation.setOptions({
         headerRight: () => (

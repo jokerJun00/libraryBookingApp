@@ -1,1 +1,0 @@
-This folder main use to create database connection and CRUD operation 
