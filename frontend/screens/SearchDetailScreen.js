@@ -23,6 +23,12 @@ export default class SearchDetailScreen extends Component {
     this.state = {
       volumeInfo: this.props.route.params.volumeInfo,
     };
+    this._query = this._query.bind(this);
+    this.db = SQLite.openDatabase(
+      {name: 'bookdb', createFromLocation: '~db.sqlite'},
+      this.openCallback,
+      this.errorCallback,
+    );
   }
 
   componentDidMount() {
@@ -33,6 +39,23 @@ export default class SearchDetailScreen extends Component {
         <BackButton parentProps={this.props} color="white" />),
     });
   }
+
+  openCallback() {
+    console.log('database open success');
+  }
+
+  errorCallback(err) {
+    console.log('Error in opening the database: ' + err);
+  }
+
+  _query() {
+    this.db.transaction(tx =>
+      tx.executeSql('SELECT * FROM book ORDER BY Title', [], (tx, results) =>
+        this.setState({books: results.rows.raw()}),
+      ),
+    );
+  }
+
 
   render() {
     try{
@@ -88,6 +111,7 @@ export default class SearchDetailScreen extends Component {
                 Author:authors,
                 Description:description,
                 refresh: this._query,
+                
               });
             }}
           />

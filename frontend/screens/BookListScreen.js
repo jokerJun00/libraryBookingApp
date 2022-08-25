@@ -136,11 +136,7 @@ export default class BookListScreen extends Component {
             </View>
           )}
           keyExtractor={item => {
-            return item.ID,
-            item.Price,
-            item.Title,
-            item.Img,
-            item.Author;
+            return item.ID;
           }}
         />
         <View>

@@ -1,6 +1,6 @@
-import React, {Component} from 'react';
-import {StyleSheet, TextInput, Text, View, ScrollView, TouchableOpacity, TouchableNativeFeedbackBase, Image ,Alert} from 'react-native';
-import {InputWithLabel, PickerWithLabel, AppButton} from '../components/UI';
+import React, { Component } from 'react';
+import { StyleSheet, TextInput, Text, View, ScrollView, TouchableOpacity, TouchableNativeFeedbackBase, Image, Alert } from 'react-native';
+import { InputWithLabel, PickerWithLabel, AppButton } from '../components/UI';
 import CheckBox from '@react-native-community/checkbox';
 import BackButton from '../components/BackButton';
 
@@ -84,6 +84,8 @@ export default class CreateScreen extends Component<Props>{
       case 'Price':
         formErrors.Price =
           value === '' ? "Field cannot be empty" : "";
+        if (isNaN(value))
+          formErrors.Price = "This field can only accept number";
         break;
       default:
         break;
@@ -117,9 +119,9 @@ export default class CreateScreen extends Component<Props>{
         this.state.Description,
         this.state.Price,
         this.state.Status,
-      ],error => {
+      ], error => {
         console.log('error on creating table ' + error.message);
-      },);
+      });
     });
 
     this.props.route.params.refresh();
@@ -156,7 +158,7 @@ export default class CreateScreen extends Component<Props>{
             />
             {formErrors.Img.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Img}</Text>)}
           </View>
-          
+
           <View>
             <InputWithLabel
               className={formErrors.Title.length > 0 ? "error" : null}
