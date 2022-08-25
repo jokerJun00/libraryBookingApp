@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { Component,useEffect } from 'react';
 import {View, Text, StyleSheet, Image, Button, TouchableNativeFeedbackBase, TouchableOpacity,} from 'react-native';
 import {FlatList} from 'react-native-gesture-handler';
 import {FloatingAction} from 'react-native-floating-action';
@@ -31,6 +31,10 @@ export default class BookListScreen extends Component {
       this.openCallback,
       this.errorCallback,
     );
+  }
+
+  componentDidUpdate(){
+    this._query();
   }
 
   componentDidMount() {
@@ -102,9 +106,19 @@ export default class BookListScreen extends Component {
     console.log('Error in opening the database: ' + err);
   }
 
+  update(){
+    console.log("test updatde");
+    useEffect(()=>{
+      this._query;
+    },[]);
+  };
+
   render() {
+    
+    this.update;
     console.log(this.state.books);
     return(
+      
       <View style={styles.container}>
         <FlatList
           data={this.state.books}
@@ -126,7 +140,7 @@ export default class BookListScreen extends Component {
                       book:item,
                       id: item.ID,
                       headerTitle: item.Title,
-                      refresh: this._query,
+                      refresh: (this._query),
                     });
                   }}
                 >

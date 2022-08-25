@@ -74,7 +74,8 @@ export default class BookingScreen extends Component {
     // maximum rent date = 30 days
     let maximumDate = new Date();
     maximumDate.setDate(maximumDate.getDate() + 30);
-
+    console.log(this.state.issueDate);
+    console.log(this.state.returnDate);
     return(
       <View style={styles.container}>
         {/* return date date picker */}
@@ -149,6 +150,7 @@ export default class BookingScreen extends Component {
           </View>
 
           <View style={{height: '10%'}}></View>
+
 
           <TouchableOpacity 
             style={styles.confirmButton}

@@ -16,7 +16,8 @@ export default class BackButton extends Component {
     return (
       <View style={styles.buttonContainer}>
         <TouchableOpacity
-          onPress={() => this.props.parentProps.navigation.goBack()}
+          onPress={() => {this.props.parentProps.navigation.goBack(),
+            ()=>this.props.parentProps.navigation.refresh()}}
         >
           <Ionicons name='arrow-back-outline' size={35} color={this.iconColor} />
         </TouchableOpacity>

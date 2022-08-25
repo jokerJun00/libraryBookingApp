@@ -75,7 +75,7 @@ export default class SearchDetailScreen extends Component {
     try{
       var image = this.state.volumeInfo.imageLinks.thumbnail;
     }catch(error){
-      var image = '..\..\assets\images\books-images\default.png';
+      var image = 'https://www.nypl.org/scout/_next/image?url=https%3A%2F%2Fdrupal.nypl.org%2Fsites-drupal%2Fdefault%2Ffiles%2Fstyles%2Fmax_width_960%2Fpublic%2Fblogs%2FJ5LVHEL.jpg%3Fitok%3DDkMp1Irh&w=1200&q=90';
       console.log(error);
     };
     console.log(image);
@@ -111,7 +111,7 @@ export default class SearchDetailScreen extends Component {
                 Author:authors,
                 Description:description,
                 refresh: this._query,
-                
+
               });
             }}
           />

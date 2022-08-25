@@ -68,6 +68,7 @@ export default class CreateScreen extends Component<Props>{
       case 'Img':
         formErrors.Img =
           value === '' ? "Field cannot be empty" : "";
+          
         break;
       case 'Title':
         formErrors.Title =
