@@ -78,7 +78,7 @@ export default class BookDetailScreen extends Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
-    if (!_.isEqual(prevState.book.Status, this.state.book.Status)) {
+    if (!_.isEqual(prevState.book, this.state.book)) {
       this._queryByID();
       this.props.navigation.setOptions({
         headerShown: true,

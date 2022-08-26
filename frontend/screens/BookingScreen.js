@@ -45,7 +45,7 @@ export default class BookingScreen extends Component {
 
   _update() {
     this.db.transaction(tx => {
-        tx.executeSql('UPDATE book SET Status=? WHERE id = ?', ["Not Available",this.state.book.ID,]);
+        tx.executeSql('UPDATE book SET Status=? WHERE id = ?', ["Not Available",this.state.book.ID]);
     });
     this.props.route.params.refresh();
     this.props.route.params.homeRefresh();
