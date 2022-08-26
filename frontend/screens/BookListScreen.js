@@ -108,8 +108,6 @@ export default class BookListScreen extends Component {
                   onPress={() => {
                     this.props.navigation.navigate('BookDetail', {
                       book: item,
-                      id: item.ID,
-                      headerTitle: item.Title,
                       refresh: this._query,
                     });
                   }}
@@ -131,10 +129,6 @@ export default class BookListScreen extends Component {
             
             onPressItem={() => {
               this.props.navigation.navigate('CreateBook', {
-                Image:'',
-                Title:'',
-                Author:'',
-                Description:'',
                 refresh: this._query,
               });
             }}

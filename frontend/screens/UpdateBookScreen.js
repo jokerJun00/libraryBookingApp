@@ -45,28 +45,34 @@ export default class UpdateScreen extends Component<Props> {
         };
         this._update = this._update.bind(this);
         this.db = SQLite.openDatabase(
-            { name: 'bookdb', createFromLocation: '~db.sqlite' },
+            { name: 'bookdb' },
             this.openDb,
             this.errorDb,
         );
     }
 
-    handleSubmit = summit => {
-        summit.preventDefault();
+    handleSubmit = submit => {
+        let formErrors = { ...this.state.formErrors };
+        submit.preventDefault();
 
         if (formValid(this.state)) {
             console.log("successful submiting")
+            Alert.alert("Update the book successfully!");
             this._update();
         } else {
-            Alert.alert("FORM INVALID\nPlease Fill up the form.");
+            formErrors.Img = this.state.Img === '' ? "Field cannot be empty" : "";
+            formErrors.Title = this.state.Title === '' ? "Field cannot be empty" : "";
+            formErrors.Author = this.state.Author === '' ? "Field cannot be empty" : "";
+            formErrors.Description = this.state.Description === '' ? "Field cannot be empty" : "";
+            formErrors.Price = this.state.Price === '' ? "Field cannot be empty" : "";
+                if (isNaN(this.state.Price)) {formErrors.Price = "This field can only accept number";}
+            this.setState({ formErrors });
+            Alert.alert("FORM INVALID\nPlease complete the form.");
         }
     };
 
     handleChange = (value, field) => {
-    
         let formErrors = { ...this.state.formErrors };
-
-        console.log(value);
         switch (field) {
             case 'Img':
                 formErrors.Img =
@@ -100,7 +106,7 @@ export default class UpdateScreen extends Component<Props> {
     componentDidMount() {
         this.props.navigation.setOptions({
             headerShown: true,
-            headerTitle: 'Add New Book',
+            headerTitle: 'Edit the Book',
             headerStyle: {
                 backgroundColor: '#1C3879',
             },
@@ -130,6 +136,7 @@ export default class UpdateScreen extends Component<Props> {
         this.props.route.params.homeRefresh();
         this.props.navigation.goBack();
     }
+
     openDb() {
         console.log('Database opened');
     }
@@ -139,8 +146,6 @@ export default class UpdateScreen extends Component<Props> {
 
     render() {
         const { formErrors } = this.state;
-
-
         return (
             <View style={styles.container}>
                 <ScrollView>
@@ -159,7 +164,7 @@ export default class UpdateScreen extends Component<Props> {
                             }}
                             orientation={'vertical'}
                         />
-                        {formErrors.Img.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Img}</Text>)}
+                        {formErrors.Img.length > 0 && (<Text style={styles.errorMessage}>{formErrors.Img}</Text>)}
                     </View>
                     <View>
                         <InputWithLabel
@@ -176,7 +181,7 @@ export default class UpdateScreen extends Component<Props> {
                             }}
                             orientation={'vertical'}
                         />
-                        {formErrors.Title.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Title}</Text>)}
+                        {formErrors.Title.length > 0 && (<Text style={styles.errorMessage}>{formErrors.Title}</Text>)}
                     </View>
                     <View>
                         <InputWithLabel
@@ -193,7 +198,7 @@ export default class UpdateScreen extends Component<Props> {
                             }}
                             orientation={'vertical'}
                         />
-                        {formErrors.Author.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Author}</Text>)}
+                        {formErrors.Author.length > 0 && (<Text style={styles.errorMessage}>{formErrors.Author}</Text>)}
                     </View>
                     <View>
                         <InputWithLabel
@@ -211,7 +216,7 @@ export default class UpdateScreen extends Component<Props> {
                             }}
                             orientation={'vertical'}
                         />
-                        {formErrors.Description.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Description}</Text>)}
+                        {formErrors.Description.length > 0 && (<Text style={styles.errorMessage}>{formErrors.Description}</Text>)}
                     </View>
                     <View>
                         <InputWithLabel
@@ -229,7 +234,7 @@ export default class UpdateScreen extends Component<Props> {
                             keyboardType={'numeric'}
                             orientation={'vertical'}
                         />
-                        {formErrors.Price.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Price}</Text>)}
+                        {formErrors.Price.length > 0 && (<Text style={styles.errorMessage}>{formErrors.Price}</Text>)}
                     </View>
 
                     <View style={styles.checkBoxContainer}>
@@ -238,7 +243,6 @@ export default class UpdateScreen extends Component<Props> {
                             tintColors={{ true: '#1C3879', false: '#C21010' }}
                             onValueChange={isAvailable => {
                                 this.setState({ isAvailable });
-
                                 this.setState({
                                     Status: this.state.isAvailable == false ? 'Not Available' : 'Available',
                                 })
@@ -284,11 +288,11 @@ const styles = StyleSheet.create({
     error: {
         borderWidth: 2,
         borderColor: '#ff0000',
-      },
-      errorMessage: {
-        color: '#ff0000',
-        fontSize: 0.75,
-      },
+    },
+    errorMessage: {
+    color: '#ff0000',
+    fontSize: 15,
+    },
     TextInput: {
         fontSize: 14,
         paddingLeft: 10,

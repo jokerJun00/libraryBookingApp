@@ -1,8 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, TouchableNativeFeedbackBase, TouchableOpacity, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import BackButton from '../components/BackButton';
 import { FloatingAction } from 'react-native-floating-action';
-import { Floatingbutt } from '../UI';
 
 let SQLite = require('react-native-sqlite-storage');
 
@@ -27,13 +26,14 @@ export default class BookDetailScreen extends Component {
     this.state = {
       book:this.props.route.params.book,
     };
-    console.log(this.state.bookID);
     this.db = SQLite.openDatabase(
       { name: 'bookdb' },
       this.openCallback,
       this.errorCallback,
     );
     this._queryByID = this._queryByID.bind(this);
+    this._bookReturn = this._bookReturn.bind(this);
+    this._delete = this._delete.bind(this);
   }
 
   _queryByID() {
@@ -44,6 +44,14 @@ export default class BookDetailScreen extends Component {
         }
       })
     );
+  }
+
+  _bookReturn() {
+    this.db.transaction(tx => {
+        tx.executeSql('UPDATE book SET Status=? WHERE id = ?', ["Available",this.state.book.ID,]);
+    });
+    this._queryByID();
+    this.props.route.params.refresh();
   }
 
   _delete() {
@@ -61,6 +69,7 @@ export default class BookDetailScreen extends Component {
             ]);
           });
           this.props.route.params.refresh();
+          Alert.alert("Delete the book successfully!");
           this.props.navigation.goBack();
         },
       },
@@ -76,21 +85,28 @@ export default class BookDetailScreen extends Component {
         <BackButton parentProps={this.props} color="white"/>
       )
     })
-    
+  }
+
+  openCallback() {
+    console.log('database opened successfully');
+  }
+
+  errorCallback(err) {
+    console.log('error in opening database: ' + err);
+  }
+
+  render() {
     if(this.state.book.Status=="Not Available"){
       this.props.navigation.setOptions({
         headerRight: () => (
-          <View style={headerStyles.rentButton}>
+          <View style={headerStyles.returnButton}>
           <TouchableOpacity
             onPress={() => {
-              this.props.navigation.navigate('BookList', {
-                book:this.state.book,
-                refresh: this._queryByID,
-                homeRefresh: this.props.route.params.refresh,
-              });
+              this._bookReturn();
+              Alert.alert('The book is returned successfully!');
             }}
           >
-            <Text style={headerStyles.rentButtonText}>Rent</Text>
+            <Text style={headerStyles.rentButtonText}>Return</Text>
           </TouchableOpacity>
         </View>
         )
@@ -115,18 +131,7 @@ export default class BookDetailScreen extends Component {
         )
       })
     }
-  }
 
-  openCallback() {
-    console.log('database opened successfully');
-  }
-
-  errorCallback(err) {
-    console.log('error in opening database: ' + err);
-  }
-
-  render() {
-    console.log(this.state.book);
     return (
       <View style={styles.container}>
         <Image
@@ -168,7 +173,6 @@ export default class BookDetailScreen extends Component {
                 switch (name) {
                   case 'edit':
                     this.backgroundColor = '#449d44';
-                    console.log(`selected button: edit button pressed`);
                     this.props.navigation.navigate('UpdateBook', {
                       book : this.state.book,
                       refresh: this._queryByID,
@@ -176,11 +180,8 @@ export default class BookDetailScreen extends Component {
                     });
                     break;
                   case 'delete':
-                    console.log(`selected button: delete button pressed`);
                     this._delete();
                     break;
-                  default:
-                    console.log(`selected button: wtf button pressed`);
                 }
               } else {
                 this.backgroundColor = '#286090';
@@ -205,6 +206,17 @@ class DetailSectionText extends Component {
 }
 
 const headerStyles = StyleSheet.create({
+  returnButton: {
+    width: 60,
+    height: 37,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#808080',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#fff',
+    marginRight: 10,
+  },
   rentButton: {
     width: 60,
     height: 37,
