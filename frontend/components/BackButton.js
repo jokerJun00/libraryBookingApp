@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
-import { StyleSheet, TouchableOpacity, TouchableNativeFeedbackBase, View, } from 'react-native';
+import { StyleSheet, TouchableOpacity, View } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 export default class BackButton extends Component {
   constructor(props){
     super(props);
-
-    this.iconColor = this.props.color 
-                      ? this.props.color == 'white'
-                        ? '#fff' : '#000'
-                      : '#000'
+    this.iconColor = this.props.color ? (this.props.color == 'white'? '#fff' : '#000'): '#000';
   }
 
   render() {
-    return (
+    return(
       <View style={styles.buttonContainer}>
+<<<<<<< HEAD
         <TouchableOpacity
           onPress={() => {this.props.parentProps.navigation.goBack(),
             ()=>this.props.parentProps.navigation.refresh()}}
         >
+=======
+        <TouchableOpacity onPress={() => this.props.parentProps.navigation.goBack()}>
+>>>>>>> origin
           <Ionicons name='arrow-back-outline' size={35} color={this.iconColor} />
         </TouchableOpacity>
       </View>
@@ -31,5 +31,3 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   }
 })
-
-
