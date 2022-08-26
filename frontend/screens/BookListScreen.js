@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { FloatingAction } from 'react-native-floating-action';
+import { _, } from 'lodash';
 
 let SQLite = require('react-native-sqlite-storage');
 
@@ -27,6 +28,13 @@ export default class BookListScreen extends Component {
       this.openCallback,
       this.errorCallback,
     );
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("update");
+    if (!_.isEqual(prevState.books, this.state.books)) {
+      this._query();
+    }
   }
 
   componentDidMount() {

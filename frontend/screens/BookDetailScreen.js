@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import BackButton from '../components/BackButton';
 import { FloatingAction } from 'react-native-floating-action';
+import { _, } from 'lodash';
 
 let SQLite = require('react-native-sqlite-storage');
 
@@ -85,17 +86,6 @@ export default class BookDetailScreen extends Component {
         <BackButton parentProps={this.props} color="white"/>
       )
     })
-  }
-
-  openCallback() {
-    console.log('database opened successfully');
-  }
-
-  errorCallback(err) {
-    console.log('error in opening database: ' + err);
-  }
-
-  render() {
     if(this.state.book.Status=="Not Available"){
       this.props.navigation.setOptions({
         headerRight: () => (
@@ -131,7 +121,66 @@ export default class BookDetailScreen extends Component {
         )
       })
     }
+  }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (!_.isEqual(prevState.book, this.state.book)) {
+      this._queryByID();
+      this.props.navigation.setOptions({
+        headerShown: true,
+        headerTitle: this.state.book.Title,
+        headerLeft: () => (
+          <BackButton parentProps={this.props} color="white" />
+        )
+      })
+
+      if(this.state.book.Status=="Not Available"){
+        this.props.navigation.setOptions({
+          headerRight: () => (
+            <View style={headerStyles.returnButton}>
+            <TouchableOpacity
+              onPress={() => {
+                this._bookReturn();
+                Alert.alert('The book is returned successfully!');
+              }}
+            >
+              <Text style={headerStyles.rentButtonText}>Return</Text>
+            </TouchableOpacity>
+          </View>
+          )
+        })
+      }
+      else if(this.state.book.Status=="Available"){
+        this.props.navigation.setOptions({
+          headerRight: () => (
+            <View style={headerStyles.rentButton}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate('Booking', {
+                  book:this.state.book,
+                  refresh: this._queryByID,
+                  homeRefresh: this.props.route.params.refresh,
+                });
+              }}
+            >
+              <Text style={headerStyles.rentButtonText}>Rent</Text>
+            </TouchableOpacity>
+          </View>
+          )
+        })
+      }
+    }
+  }
+
+  openCallback() {
+    console.log('database opened successfully');
+  }
+
+  errorCallback(err) {
+    console.log('error in opening database: ' + err);
+  }
+
+  render() {
     return (
       <View style={styles.container}>
         <Image

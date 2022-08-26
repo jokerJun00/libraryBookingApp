@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, TouchableNativeFeedbackBase, TouchableOpacity, Alert} from 'react-native';
+import { StyleSheet, Text, View, Image, TouchableOpacity, Alert} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-date-picker'
 import BackButton from '../components/BackButton';
@@ -45,10 +45,7 @@ export default class BookingScreen extends Component {
 
   _update() {
     this.db.transaction(tx => {
-        tx.executeSql('UPDATE book SET Status=? WHERE id = ?', [
-            "Not Available",
-            this.state.book.ID,
-        ]);
+        tx.executeSql('UPDATE book SET Status=? WHERE id = ?', ["Not Available",this.state.book.ID,]);
     });
     this.props.route.params.refresh();
     this.props.route.params.homeRefresh();
@@ -63,17 +60,13 @@ export default class BookingScreen extends Component {
   }
 
   render() {
-    // default return date = 1 week after rented
+    // default return date = next day
     let returnDate = new Date();
-    returnDate.setDate(returnDate.getDate() + 7);
+    returnDate.setDate(returnDate.getDate() + 1);
 
     // minimum rent date = 1 day
     let minimumDate = new Date();
     minimumDate.setDate(minimumDate.getDate() + 1);
-
-    // maximum rent date = 30 days
-    let maximumDate = new Date();
-    maximumDate.setDate(maximumDate.getDate() + 30);
 
     return(
       <View style={styles.container}>
@@ -84,7 +77,6 @@ export default class BookingScreen extends Component {
           title={"Select return date"}
           date={returnDate}
           minimumDate={minimumDate}
-          maximumDate={maximumDate}
           open={this.state.openPicker}
           onConfirm={(data) => {
             console.log(data);
@@ -92,7 +84,6 @@ export default class BookingScreen extends Component {
             this.setState({
               returnDate: returnDate,
               openPicker: false,
-              //rentSuccess: true,
             })
           }}
           onCancel={() => {
@@ -153,17 +144,10 @@ export default class BookingScreen extends Component {
           <TouchableOpacity 
             style={styles.confirmButton}
             onPress={() => {
-              // develop logic to check if the data create successfully or not here
               if(this.state.returnDate=="select date"){
                 Alert.alert("Please choose the return date!");
               }
-              else if(this.state.returnDate < this.state.issueDate ){
-                Alert.alert("The return date must after issue date!");
-              }
-              else if(this.state.returnDate == this.state.issueDate ){
-                Alert.alert("The return date cannot same with issue date!");
-              }
-              else if(this.state.issueDate < this.state.returnDate ){
+              else{
                 this._update();
                 Alert.alert("You have rent successfully!");
                 this.props.navigation.goBack();
