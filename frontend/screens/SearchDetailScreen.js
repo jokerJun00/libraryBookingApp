@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { FlatList, Text, StyleSheet, View, TouchableOpacity,Image } from 'react-native';
+import { StyleSheet, View, TouchableOpacity,Image } from 'react-native';
 import { InputWithLabel } from '../components/UI';
 import BackButton from '../components/BackButton';
 import Clipboard from '@react-native-community/clipboard';
