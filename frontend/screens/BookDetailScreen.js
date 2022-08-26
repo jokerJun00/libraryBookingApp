@@ -49,7 +49,7 @@ export default class BookDetailScreen extends Component {
 
   _bookReturn() {
     this.db.transaction(tx => {
-        tx.executeSql('UPDATE book SET Status=? WHERE id = ?', ["Available",this.state.book.ID,]);
+        tx.executeSql('UPDATE book SET Status=? WHERE id = ?', ["Available",this.state.book.ID]);
     });
     this._queryByID();
     this.props.route.params.refresh();
@@ -75,14 +75,10 @@ export default class BookDetailScreen extends Component {
         },
       },
     ]);
-
   }
 
   componentDidUpdate(prevProps, prevState) {
-    console.log("detail update");
     if (!_.isEqual(prevState.book.Status, this.state.book.Status)) {
-      console.log("detail123 update");
-
       this._queryByID();
       this.props.navigation.setOptions({
         headerShown: true,
@@ -97,7 +93,7 @@ export default class BookDetailScreen extends Component {
             <View style={headerStyles.rentButton}>
               <TouchableOpacity
                 onPress={() => {
-                  this._bookReturnUpdate(),
+                  this._bookReturn(),
                     this.props.navigation.navigate('BookDetail', {
                       book: this.state.book,
                       refresh: this._queryByID,
@@ -147,16 +143,15 @@ export default class BookDetailScreen extends Component {
       this.props.navigation.setOptions({
         headerRight: () => (
           <View style={headerStyles.returnButton}>
-          <TouchableOpacity
-            onPress={() => {
-              this._bookReturn();
-              Alert.alert('The book is returned successfully!');
-            }}
-          >
-            <Text style={headerStyles.rentButtonText}>Return</Text>
-          </TouchableOpacity>
-        </View>
-
+            <TouchableOpacity
+              onPress={() => {
+                this._bookReturn();
+                Alert.alert('The book is returned successfully!');
+              }}
+            >
+              <Text style={headerStyles.rentButtonText}>Return</Text>
+            </TouchableOpacity>
+          </View>
         )
       })
     }
@@ -292,7 +287,6 @@ export default class BookDetailScreen extends Component {
                 }
               } else {
                 this.backgroundColor = '#286090';
-
               }
             } 
           }

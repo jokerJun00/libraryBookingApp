@@ -1,4 +1,4 @@
-import React, { Component, useEffect } from 'react';
+import React, { Component } from 'react';
 import { View, Text, StyleSheet, Image, TouchableOpacity, } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { FloatingAction } from 'react-native-floating-action';
@@ -40,14 +40,6 @@ export default class BookListScreen extends Component {
   componentDidMount() {
     this._databasePrepare();
     this._query();
-    //this._droptable();
-  }
-
-  _droptable() {
-    this.db.transaction(tx =>
-      tx.executeSql('DROP TABLE book', [],
-      ),
-    );
   }
 
   _databasePrepare() {
@@ -115,9 +107,7 @@ export default class BookListScreen extends Component {
           showsVerticalScrollIndicator={true}
           renderItem={({ item }) => (
             <View style={styles.item}>
-
               <Image style={styles.img} source={{ uri: item.Img }} />
-
               <View style={styles.columnContainer}>
                 <Text style={styles.itemTitle}>{item.Title}{'\n'}</Text>
                 <Text style={styles.itemSubtitle}>{item.Author}{'\n'}</Text>

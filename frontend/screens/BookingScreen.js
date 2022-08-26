@@ -3,7 +3,6 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, Alert} from 'react-nat
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-date-picker'
 import BackButton from '../components/BackButton';
-import {addDays,differenceInDays} from 'date-fns'
 let SQLite = require('react-native-sqlite-storage');
 
 export default class BookingScreen extends Component {

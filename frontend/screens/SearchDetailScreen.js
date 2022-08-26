@@ -25,7 +25,7 @@ export default class SearchDetailScreen extends Component {
     };
     this._query = this._query.bind(this);
     this.db = SQLite.openDatabase(
-      {name: 'bookdb', createFromLocation: '~db.sqlite'},
+      {name: 'bookdb'},
       this.openCallback,
       this.errorCallback,
     );

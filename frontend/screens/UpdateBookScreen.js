@@ -1,10 +1,9 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, Text, View, ScrollView, TouchableOpacity, TouchableNativeFeedbackBase,Alert } from 'react-native';
-import { InputWithLabel, PickerWithLabel, AppButton } from '../components/UI';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert } from 'react-native';
+import { InputWithLabel } from '../components/UI';
 import CheckBox from '@react-native-community/checkbox';
 import BackButton from '../components/BackButton';
 
-let common = require('../BookStatus');
 let SQLite = require('react-native-sqlite-storage');
 
 const formValid = ({ formErrors, ...rest }) => {
@@ -118,7 +117,6 @@ export default class UpdateScreen extends Component<Props> {
             ),
         });
     }
-
 
     _update() {
         this.db.transaction(tx => {
