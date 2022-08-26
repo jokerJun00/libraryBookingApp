@@ -22,6 +22,7 @@ export default class BookListScreen extends Component {
     super(props);
     this.state = {
       books: [],
+      intervalRefresh: true,
     };
     this._query = this._query.bind(this);
     this._databasePrepare = this._databasePrepare.bind(this);
@@ -30,15 +31,16 @@ export default class BookListScreen extends Component {
       this.openCallback,
       this.errorCallback,
     );
+    this._query();
+    setInterval(() => {
+      this.setState(intervalRefresh => {
+        console.log("refresh main list");
+        this._query;
+      })
+    }, 10000);
   }
 
-  componentDidUpdate(prevProps, prevState) {
-    console.log("update");
-    if (!_.isEqual(prevState.books, this.state.books)) {
-      this._query();
 
-    }
-  }
 
   componentDidMount() {
     this._databasePrepare();
