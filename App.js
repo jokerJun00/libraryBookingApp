@@ -55,9 +55,6 @@ export default class App extends Component {
             name='UpdateBook'
             component={UpdateBookScreen}></Stack.Screen>
           <Stack.Screen
-            name='SearchBook'
-            component={SearchBookScreen}></Stack.Screen>
-          <Stack.Screen
             name='SearchDetail'
             component={SearchDetailScreen}></Stack.Screen>
           <Stack.Screen
@@ -149,7 +146,7 @@ class DrawerNavigator extends Component {
           }}
         />
         <Drawer.Screen
-          name='SearchInfo'
+          name='SearchBook'
           component={SearchBookScreen}
           options={{
             drawerIcon: ({color}) => (

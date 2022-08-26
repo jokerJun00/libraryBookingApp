@@ -1,14 +1,6 @@
 import React, {Component} from 'react';
-import {Alert,FlatList,StyleSheet,TouchableHighlight,Text,View,TextInput,TouchableNativeFeedback,} from 'react-native';
+import { Alert, FlatList, StyleSheet, TouchableHighlight, Text, View, TextInput, TouchableNativeFeedback,} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-const actions = [
-  {
-    text: 'Add',
-    name: 'add',
-    position: 1,
-    color: '#cd5c5c',
-  },
-];
 
 export default class SearchBookScreen extends Component<Props> {
   constructor(props) {
@@ -21,6 +13,7 @@ export default class SearchBookScreen extends Component<Props> {
     };
     this._load = this._load.bind(this);
   }
+
   _load() {
     let url ='https://www.googleapis.com/books/v1/volumes?q=' + this.state.keyword;
     this.setState({isFetching: true});
@@ -41,6 +34,7 @@ export default class SearchBookScreen extends Component<Props> {
         console.log(error);
       });
   }
+  
   render() {
     return (
       <>
@@ -98,6 +92,7 @@ export default class SearchBookScreen extends Component<Props> {
     );
   }
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

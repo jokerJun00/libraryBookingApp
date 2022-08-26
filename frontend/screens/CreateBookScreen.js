@@ -30,10 +30,10 @@ export default class CreateScreen extends Component<Props>{
   constructor(props) {
     super(props);
     this.state = {
-      Img: '',
-      Title: '',
-      Author: '',
-      Description: '',
+      Img: this.props.route.params.Image,
+      Title: this.props.route.params.Title,
+      Author: this.props.route.params.Author,
+      Description: this.props.route.params.Description,
       Price: '',
       Status: 'Available',
       isAvailable: true,
