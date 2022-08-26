@@ -90,7 +90,6 @@ const buttonStyles = StyleSheet.create({
 /**
  * PickerWithLabel
  */
-
 class PickerWithLabel extends Component {
   constructor(props) {
     super(props);
