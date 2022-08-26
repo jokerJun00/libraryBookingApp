@@ -1,11 +1,10 @@
-import React, { Component } from 'react';
-import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
+import React, { Component, useEffect } from 'react';
+import { View, Text, StyleSheet, Image, TouchableOpacity, } from 'react-native';
 import { FlatList } from 'react-native-gesture-handler';
 import { FloatingAction } from 'react-native-floating-action';
 import { _, } from 'lodash';
 
 let SQLite = require('react-native-sqlite-storage');
-
 const actions = [
   {
     text: 'Add',
@@ -15,31 +14,40 @@ const actions = [
   },
 ];
 
-export default class BookListScreen extends Component { 
+export default class BookListScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
       books: [],
+      intervalRefresh: true,
     };
     this._query = this._query.bind(this);
     this._databasePrepare = this._databasePrepare.bind(this);
     this.db = SQLite.openDatabase(
-      {name: 'bookdb', createFromLocation: '~db.sqlite'},
+      { name: 'bookdb', createFromLocation: '~db.sqlite' },
       this.openCallback,
       this.errorCallback,
     );
-  }
-
-  componentDidUpdate(prevProps, prevState) {
-    console.log("update");
-    if (!_.isEqual(prevState.books, this.state.books)) {
-      this._query();
-    }
+    this._query();
+    setInterval(() => {
+      this.setState(intervalRefresh => {
+        console.log("refresh main list");
+        this._query();
+      })
+    }, 10000);
   }
 
   componentDidMount() {
     this._databasePrepare();
     this._query();
+    //this._droptable();
+  }
+
+  _droptable() {
+    this.db.transaction(tx =>
+      tx.executeSql('DROP TABLE book', [],
+      ),
+    );
   }
 
   _databasePrepare() {
@@ -85,7 +93,7 @@ export default class BookListScreen extends Component {
   _query() {
     this.db.transaction(tx =>
       tx.executeSql('SELECT * FROM book ORDER BY Title', [], (tx, results) =>
-        this.setState({books: results.rows.raw()}),
+        this.setState({ books: results.rows.raw() }),
       ),
     );
   }
@@ -98,16 +106,18 @@ export default class BookListScreen extends Component {
     console.log('Error in opening the database: ' + err);
   }
 
-  render(){
-    return(
+  render() {
+    return (
       <View style={styles.container}>
         <FlatList
           data={this.state.books}
           extraData={this.state}
           showsVerticalScrollIndicator={true}
-          renderItem={({item}) => (
+          renderItem={({ item }) => (
             <View style={styles.item}>
-              <Image style={styles.img} source={{uri: item.Img }}/>
+
+              <Image style={styles.img} source={{ uri: item.Img }} />
+
               <View style={styles.columnContainer}>
                 <Text style={styles.itemTitle}>{item.Title}{'\n'}</Text>
                 <Text style={styles.itemSubtitle}>{item.Author}{'\n'}</Text>
@@ -134,9 +144,12 @@ export default class BookListScreen extends Component {
             actions={actions}
             overrideWithAction={true}
             color={'#607EAA'}
-            
             onPressItem={() => {
               this.props.navigation.navigate('CreateBook', {
+                Image: '',
+                Title: '',
+                Author: '',
+                Description: '',
                 refresh: this._query,
               });
             }}

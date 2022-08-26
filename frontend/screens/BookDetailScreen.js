@@ -25,7 +25,7 @@ export default class BookDetailScreen extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      book:this.props.route.params.book,
+      book: this.props.route.params.book,
     };
     this.db = SQLite.openDatabase(
       { name: 'bookdb' },
@@ -41,7 +41,7 @@ export default class BookDetailScreen extends Component {
     this.db.transaction(tx =>
       tx.executeSql('SELECT * FROM book WHERE ID = ?', [this.state.book.ID], (tx, results) => {
         if (results.rows.length) {
-          this.setState({ book : results.rows.raw()[0]});
+          this.setState({ book: results.rows.raw()[0] });
         }
       })
     );
@@ -75,6 +75,62 @@ export default class BookDetailScreen extends Component {
         },
       },
     ]);
+
+  }
+
+  componentDidUpdate(prevProps, prevState) {
+    console.log("detail update");
+    if (!_.isEqual(prevState.book.Status, this.state.book.Status)) {
+      console.log("detail123 update");
+
+      this._queryByID();
+      this.props.navigation.setOptions({
+        headerShown: true,
+        headerTitle: this.state.book.Title,
+        headerLeft: () => (
+          <BackButton parentProps={this.props} color="white" />
+        )
+      })
+      if (this.state.book.Status == "Not Available") {
+        this.props.navigation.setOptions({
+          headerRight: () => (
+            <View style={headerStyles.rentButton}>
+              <TouchableOpacity
+                onPress={() => {
+                  this._bookReturnUpdate(),
+                    this.props.navigation.navigate('BookDetail', {
+                      book: this.state.book,
+                      refresh: this._queryByID,
+                      homeRefresh: this.props.route.params.refresh,
+                    });
+                }}
+              >
+                <Text style={headerStyles.rentButtonText}>Return</Text>
+              </TouchableOpacity>
+            </View>
+          )
+        })
+      }
+      else if (this.state.book.Status == "Available") {
+        this.props.navigation.setOptions({
+          headerRight: () => (
+            <View style={headerStyles.rentButton}>
+              <TouchableOpacity
+                onPress={() => {
+                  this.props.navigation.navigate('Booking', {
+                    book: this.state.book,
+                    refresh: this._queryByID,
+                    homeRefresh: this.props.route.params.refresh,
+                  });
+                }}
+              >
+                <Text style={headerStyles.rentButtonText}>Rent</Text>
+              </TouchableOpacity>
+            </View>
+          )
+        })
+      }
+    }
   }
 
   componentDidMount() {
@@ -83,9 +139,10 @@ export default class BookDetailScreen extends Component {
       headerShown: true,
       headerTitle: this.state.book.Title,
       headerLeft: () => (
-        <BackButton parentProps={this.props} color="white"/>
+        <BackButton parentProps={this.props} color="white" />
       )
     })
+
     if(this.state.book.Status=="Not Available"){
       this.props.navigation.setOptions({
         headerRight: () => (
@@ -99,25 +156,26 @@ export default class BookDetailScreen extends Component {
             <Text style={headerStyles.rentButtonText}>Return</Text>
           </TouchableOpacity>
         </View>
+
         )
       })
     }
-    else if(this.state.book.Status=="Available"){
+    else if (this.state.book.Status == "Available") {
       this.props.navigation.setOptions({
         headerRight: () => (
           <View style={headerStyles.rentButton}>
-          <TouchableOpacity
-            onPress={() => {
-              this.props.navigation.navigate('Booking', {
-                book:this.state.book,
-                refresh: this._queryByID,
-                homeRefresh: this.props.route.params.refresh,
-              });
-            }}
-          >
-            <Text style={headerStyles.rentButtonText}>Rent</Text>
-          </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate('Booking', {
+                  book: this.state.book,
+                  refresh: this._queryByID,
+                  homeRefresh: this.props.route.params.refresh,
+                });
+              }}
+            >
+              <Text style={headerStyles.rentButtonText}>Rent</Text>
+            </TouchableOpacity>
+          </View>
         )
       })
     }
@@ -234,9 +292,11 @@ export default class BookDetailScreen extends Component {
                 }
               } else {
                 this.backgroundColor = '#286090';
+
               }
-            }}
-          />
+            } 
+          }
+        />
       </View>
     );
   }

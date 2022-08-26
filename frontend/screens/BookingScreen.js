@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, TouchableOpacity, Alert} from 'react-nat
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-date-picker'
 import BackButton from '../components/BackButton';
+import {addDays,differenceInDays} from 'date-fns'
 let SQLite = require('react-native-sqlite-storage');
 
 export default class BookingScreen extends Component {
@@ -66,7 +67,7 @@ export default class BookingScreen extends Component {
 
     // minimum rent date = 1 day
     let minimumDate = new Date();
-    minimumDate.setDate(minimumDate.getDate() + 1);
+    minimumDate.setDate(minimumDate.getDate()+1);
 
     return(
       <View style={styles.container}>
@@ -113,7 +114,7 @@ export default class BookingScreen extends Component {
           <View style={styles.dateSection}>
             <Text style={styles.text}>Issue date:</Text>
             <View style={styles.selectSection}>
-              <Text style={styles.text}>{this.state.issueDate}</Text>
+              <Text style={styles.text}>{this.state.issueDate.toString()}</Text>
               <View style={{width: 15}}></View>
               <Ionicons name='calendar-outline' size={20} />
             </View>
@@ -125,7 +126,7 @@ export default class BookingScreen extends Component {
           <View style={styles.dateSection}>
             <Text style={styles.text}>Return date:</Text>
             <View style={styles.selectSection}>
-              <Text style={[styles.text, {color: '#1C3879'}]}>{this.state.returnDate}</Text>
+              <Text style={[styles.text, {color: '#1C3879'}]}>{this.state.returnDate.toString()}</Text>
               <View style={{width: 15}}></View>
               <TouchableOpacity
                 onPress={ () => {
@@ -141,9 +142,11 @@ export default class BookingScreen extends Component {
 
           <View style={{height: '10%'}}></View>
 
+
           <TouchableOpacity 
             style={styles.confirmButton}
             onPress={() => {
+
               if(this.state.returnDate=="select date"){
                 Alert.alert("Please choose the return date!");
               }

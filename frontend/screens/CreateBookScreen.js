@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TouchableNativeFeedbackBase, Image, Alert } from 'react-native';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import { InputWithLabel } from '../components/UI';
 import CheckBox from '@react-native-community/checkbox';
 import BackButton from '../components/BackButton';
@@ -79,6 +79,7 @@ export default class CreateScreen extends Component<Props>{
       case 'Img':
         formErrors.Img =
           value === '' ? "Field cannot be empty" : "";
+          
         break;
       case 'Title':
         formErrors.Title =
