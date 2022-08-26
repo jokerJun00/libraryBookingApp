@@ -66,16 +66,16 @@ export default class BookingScreen extends Component {
   render() {
     // default return date = 1 week after rented
     let returnDate = new Date();
-    returnDate.setDate(addDays(returnDate.getDate(),7));
+    returnDate.setDate(returnDate.getDate()+7);
     console.log('returnDate');
     console.log(returnDate);
     // minimum rent date = 1 day
     let minimumDate = new Date();
-    minimumDate.setDate(addDays(minimumDate.getDate(),1));
+    minimumDate.setDate(minimumDate.getDate()+1);
 
     // maximum rent date = 30 days
     let maximumDate = new Date();
-    maximumDate.setDate(addDays(maximumDate.getDate(), 30));
+    maximumDate.setDate(maximumDate.getDate()+ 30);
     console.log(this.state.issueDate);
     console.log(this.state.returnDate);
     return(
@@ -161,13 +161,13 @@ export default class BookingScreen extends Component {
               if(this.state.returnDate=="select date" ){
                 Alert.alert("Please choose the return date!");
               }
-              else if(differenceInDays( this.state.returnDate , this.state.issueDate) < 0 ){
+              else if( this.state.returnDate < this.state.issueDate ){
                 Alert.alert("The return date must after issue date!");
               }
-              else if(differenceInDays( this.state.returnDate , this.state.issueDate) == 0 ){
+              else if( this.state.returnDate== this.state.issueDate){
                 Alert.alert("The return date cannot same with issue date!");
               }
-              else if(differenceInDays( this.state.returnDate , this.state.issueDate) > 0  ){
+              else if(this.state.returnDate > this.state.issueDate ){
                 this._update();
                 Alert.alert("You have rent successfully!");
                 this.props.navigation.goBack();
