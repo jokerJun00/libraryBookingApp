@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, TouchableNativeFeedbackBase, TouchableOp
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import DatePicker from 'react-native-date-picker'
 import BackButton from '../components/BackButton';
+import {addDays,differenceInDays} from 'date-fns'
 let SQLite = require('react-native-sqlite-storage');
 
 export default class BookingScreen extends Component {
@@ -65,15 +66,16 @@ export default class BookingScreen extends Component {
   render() {
     // default return date = 1 week after rented
     let returnDate = new Date();
-    returnDate.setDate(returnDate.getDate() + 7);
-
+    returnDate.setDate(addDays(returnDate.getDate(),7));
+    console.log('returnDate');
+    console.log(returnDate);
     // minimum rent date = 1 day
     let minimumDate = new Date();
-    minimumDate.setDate(minimumDate.getDate() + 1);
+    minimumDate.setDate(addDays(minimumDate.getDate(),1));
 
     // maximum rent date = 30 days
     let maximumDate = new Date();
-    maximumDate.setDate(maximumDate.getDate() + 30);
+    maximumDate.setDate(addDays(maximumDate.getDate(), 30));
     console.log(this.state.issueDate);
     console.log(this.state.returnDate);
     return(
@@ -123,7 +125,7 @@ export default class BookingScreen extends Component {
           <View style={styles.dateSection}>
             <Text style={styles.text}>Issue date:</Text>
             <View style={styles.selectSection}>
-              <Text style={styles.text}>{this.state.issueDate}</Text>
+              <Text style={styles.text}>{this.state.issueDate.toString()}</Text>
               <View style={{width: 15}}></View>
               <Ionicons name='calendar-outline' size={20} />
             </View>
@@ -135,7 +137,7 @@ export default class BookingScreen extends Component {
           <View style={styles.dateSection}>
             <Text style={styles.text}>Return date:</Text>
             <View style={styles.selectSection}>
-              <Text style={[styles.text, {color: '#1C3879'}]}>{this.state.returnDate}</Text>
+              <Text style={[styles.text, {color: '#1C3879'}]}>{this.state.returnDate.toString()}</Text>
               <View style={{width: 15}}></View>
               <TouchableOpacity
                 onPress={ () => {
@@ -156,16 +158,16 @@ export default class BookingScreen extends Component {
             style={styles.confirmButton}
             onPress={() => {
               // develop logic to check if the data create successfully or not here
-              if(this.state.returnDate=="select date"){
+              if(this.state.returnDate=="select date" ){
                 Alert.alert("Please choose the return date!");
               }
-              else if(this.state.returnDate < this.state.issueDate ){
+              else if(differenceInDays( this.state.returnDate , this.state.issueDate) < 0 ){
                 Alert.alert("The return date must after issue date!");
               }
-              else if(this.state.returnDate == this.state.issueDate ){
+              else if(differenceInDays( this.state.returnDate , this.state.issueDate) == 0 ){
                 Alert.alert("The return date cannot same with issue date!");
               }
-              else if(this.state.issueDate < this.state.returnDate ){
+              else if(differenceInDays( this.state.returnDate , this.state.issueDate) > 0  ){
                 this._update();
                 Alert.alert("You have rent successfully!");
                 this.props.navigation.goBack();
