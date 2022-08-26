@@ -1,9 +1,7 @@
 import React, { Component } from 'react';
-import { StyleSheet, Text, View, Image, ScrollView, TouchableNativeFeedbackBase, TouchableOpacity, Button, Alert } from 'react-native';
+import { StyleSheet, Text, View, Image, ScrollView, TouchableOpacity, Alert } from 'react-native';
 import BackButton from '../components/BackButton';
 import { FloatingAction } from 'react-native-floating-action';
-import { Floatingbutt } from '../UI';
-import { configureProps } from 'react-native-reanimated/lib/reanimated2/core';
 import { _, } from 'lodash';
 
 let SQLite = require('react-native-sqlite-storage');
@@ -29,13 +27,14 @@ export default class BookDetailScreen extends Component {
     this.state = {
       book: this.props.route.params.book,
     };
-    console.log(this.state.bookID);
     this.db = SQLite.openDatabase(
       { name: 'bookdb' },
       this.openCallback,
       this.errorCallback,
     );
     this._queryByID = this._queryByID.bind(this);
+    this._bookReturn = this._bookReturn.bind(this);
+    this._delete = this._delete.bind(this);
   }
 
   _queryByID() {
@@ -48,15 +47,12 @@ export default class BookDetailScreen extends Component {
     );
   }
 
-  _bookReturnUpdate() {
-    console.log("go in ruterun update"),
 
-      this.db.transaction(tx => {
-        tx.executeSql('UPDATE book SET Status=? WHERE id = ?', [
-          "Available",
-          this.state.book.ID,
-        ]);
-      });
+  _bookReturn() {
+    this.db.transaction(tx => {
+        tx.executeSql('UPDATE book SET Status=? WHERE id = ?', ["Available",this.state.book.ID,]);
+    });
+    this._queryByID();
     this.props.route.params.refresh();
   }
 
@@ -75,6 +71,7 @@ export default class BookDetailScreen extends Component {
             ]);
           });
           this.props.route.params.refresh();
+          Alert.alert("Delete the book successfully!");
           this.props.navigation.goBack();
         },
       },
@@ -147,23 +144,20 @@ export default class BookDetailScreen extends Component {
       )
     })
 
-    if (this.state.book.Status == "Not Available") {
+    if(this.state.book.Status=="Not Available"){
       this.props.navigation.setOptions({
         headerRight: () => (
-          <View style={headerStyles.rentButton}>
-            <TouchableOpacity
-              onPress={() => {
-                this._bookReturnUpdate(),
-                  this.props.navigation.navigate('BookDetail', {
-                    book: this.state.book,
-                    refresh: this._queryByID,
-                    homeRefresh: this.props.route.params.refresh,
-                  });
-              }}
-            >
-              <Text style={headerStyles.rentButtonText}>Return</Text>
-            </TouchableOpacity>
-          </View>
+          <View style={headerStyles.returnButton}>
+          <TouchableOpacity
+            onPress={() => {
+              this._bookReturn();
+              Alert.alert('The book is returned successfully!');
+            }}
+          >
+            <Text style={headerStyles.rentButtonText}>Return</Text>
+          </TouchableOpacity>
+        </View>
+
         )
       })
     }
@@ -188,6 +182,55 @@ export default class BookDetailScreen extends Component {
     }
   }
 
+  componentDidUpdate(prevProps, prevState) {
+    if (!_.isEqual(prevState.book, this.state.book)) {
+      this._queryByID();
+      this.props.navigation.setOptions({
+        headerShown: true,
+        headerTitle: this.state.book.Title,
+        headerLeft: () => (
+          <BackButton parentProps={this.props} color="white" />
+        )
+      })
+
+      if(this.state.book.Status=="Not Available"){
+        this.props.navigation.setOptions({
+          headerRight: () => (
+            <View style={headerStyles.returnButton}>
+            <TouchableOpacity
+              onPress={() => {
+                this._bookReturn();
+                Alert.alert('The book is returned successfully!');
+              }}
+            >
+              <Text style={headerStyles.rentButtonText}>Return</Text>
+            </TouchableOpacity>
+          </View>
+          )
+        })
+      }
+      else if(this.state.book.Status=="Available"){
+        this.props.navigation.setOptions({
+          headerRight: () => (
+            <View style={headerStyles.rentButton}>
+            <TouchableOpacity
+              onPress={() => {
+                this.props.navigation.navigate('Booking', {
+                  book:this.state.book,
+                  refresh: this._queryByID,
+                  homeRefresh: this.props.route.params.refresh,
+                });
+              }}
+            >
+              <Text style={headerStyles.rentButtonText}>Rent</Text>
+            </TouchableOpacity>
+          </View>
+          )
+        })
+      }
+    }
+  }
+
   openCallback() {
     console.log('database opened successfully');
   }
@@ -197,7 +240,6 @@ export default class BookDetailScreen extends Component {
   }
 
   render() {
-    console.log(this.state.book);
     return (
       <View style={styles.container}>
         <Image
@@ -232,31 +274,30 @@ export default class BookDetailScreen extends Component {
           </ScrollView>
         </View>
         <FloatingAction
-          actions={actions}
-          color={'#607EAA'}
-          onPressItem={name => {
-            if (name) {
-              switch (name) {
-                case 'edit':
-                  this.backgroundColor = '#449d44';
-                  console.log(`selected button: edit button pressed`);
-                  this.props.navigation.navigate('UpdateBook', {
-                    book: this.state.book,
-                    refresh: this._queryByID,
-                    homeRefresh: this.props.route.params.refresh,
-                  });
-                  break;
-                case 'delete':
-                  console.log(`selected button: delete button pressed`);
-                  this._delete();
-                  break;
-                default:
-                  console.log(`selected button: unknow button pressed`);
+
+            actions={actions}
+            color={'#607EAA'}
+            onPressItem={name => {
+              if (name) {
+                switch (name) {
+                  case 'edit':
+                    this.backgroundColor = '#449d44';
+                    this.props.navigation.navigate('UpdateBook', {
+                      book : this.state.book,
+                      refresh: this._queryByID,
+                      homeRefresh: this.props.route.params.refresh,
+                    });
+                    break;
+                  case 'delete':
+                    this._delete();
+                    break;
+                }
+              } else {
+                this.backgroundColor = '#286090';
+
               }
-            } else {
-              this.backgroundColor = '#286090';
-            }
-          }}
+            } 
+          }
         />
       </View>
     );
@@ -276,6 +317,17 @@ class DetailSectionText extends Component {
 }
 
 const headerStyles = StyleSheet.create({
+  returnButton: {
+    width: 60,
+    height: 37,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: '#808080',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: '#fff',
+    marginRight: 10,
+  },
   rentButton: {
     width: 60,
     height: 37,

@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
-import { StyleSheet, TextInput, Text, View, ScrollView, TouchableOpacity, TouchableNativeFeedbackBase, Image, Alert } from 'react-native';
-import { InputWithLabel, PickerWithLabel, AppButton } from '../components/UI';
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TouchableNativeFeedbackBase, Image, Alert } from 'react-native';
+import { InputWithLabel } from '../components/UI';
 import CheckBox from '@react-native-community/checkbox';
 import BackButton from '../components/BackButton';
+import { LogBox } from "react-native";
+LogBox.ignoreLogs([
+  'Non-serializable values were found in the navigation state',
+]);
 
-let common = require('../BookStatus');
 let SQLite = require('react-native-sqlite-storage');
 
 const formValid = ({ formErrors, ...rest }) => {
@@ -44,26 +47,34 @@ export default class CreateScreen extends Component<Props>{
     };
     this._insert = this._insert.bind(this);
     this.db = SQLite.openDatabase(
-      { name: 'bookdb', createFromLocation: '~db.sqlite' },
+      { name: 'bookdb' },
       this.openDb,
       this.errorDb,
     );
   }
 
-  handleSubmit = summit => {
-    summit.preventDefault();
+  handleSubmit = submit => {
+    let formErrors = { ...this.state.formErrors };
+    submit.preventDefault();
 
     if (formValid(this.state)) {
+      Alert.alert("Create the book successfully!");
       this._insert();
       console.log("successful submiting")
     } else {
-      Alert.alert("FORM INVALID\nPlease Fill up the form.");
+      formErrors.Img = this.state.Img === '' ? "Field cannot be empty" : "";
+      formErrors.Title = this.state.Title === '' ? "Field cannot be empty" : "";
+      formErrors.Author = this.state.Author === '' ? "Field cannot be empty" : "";
+      formErrors.Description = this.state.Description === '' ? "Field cannot be empty" : "";
+      formErrors.Price = this.state.Price === '' ? "Field cannot be empty" : "";
+        if (isNaN(this.state.Price)) {formErrors.Price = "This field can only accept number";}
+      this.setState({ formErrors });
+      Alert.alert("FORM INVALID\nPlease complete the form.");
     }
   };
 
   handleChange = (value, field) => {
     let formErrors = { ...this.state.formErrors };
-
     switch (field) {
       case 'Img':
         formErrors.Img =
@@ -91,7 +102,6 @@ export default class CreateScreen extends Component<Props>{
       default:
         break;
     }
-    console.log(formErrors);
     this.setState({ formErrors });
   }
 
@@ -121,10 +131,9 @@ export default class CreateScreen extends Component<Props>{
         this.state.Price,
         this.state.Status,
       ], error => {
-        console.log('error on creating table ' + error.message);
+        console.log('error on inserting data :' + error.message);
       });
     });
-
     this.props.route.params.refresh();
     this.props.navigation.goBack();
   }
@@ -157,7 +166,7 @@ export default class CreateScreen extends Component<Props>{
               }}
               orientation={'vertical'}
             />
-            {formErrors.Img.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Img}</Text>)}
+            {formErrors.Img.length > 0 && (<Text style={styles.errorMessage}>{formErrors.Img}</Text>)}
           </View>
 
           <View>
@@ -175,7 +184,7 @@ export default class CreateScreen extends Component<Props>{
               }}
               orientation={'vertical'}
             />
-            {formErrors.Title.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Title}</Text>)}
+            {formErrors.Title.length > 0 && (<Text style={styles.errorMessage}>{formErrors.Title}</Text>)}
           </View>
 
           <View>
@@ -193,7 +202,7 @@ export default class CreateScreen extends Component<Props>{
               }}
               orientation={'vertical'}
             />
-            {formErrors.Author.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Author}</Text>)}
+            {formErrors.Author.length > 0 && (<Text style={styles.errorMessage}>{formErrors.Author}</Text>)}
           </View>
 
           <View>
@@ -212,7 +221,7 @@ export default class CreateScreen extends Component<Props>{
               }}
               orientation={'vertical'}
             />
-            {formErrors.Description.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Description}</Text>)}
+            {formErrors.Description.length > 0 && (<Text style={styles.errorMessage}>{formErrors.Description}</Text>)}
           </View>
 
           <View>
@@ -231,7 +240,7 @@ export default class CreateScreen extends Component<Props>{
               keyboardType={'numeric'}
               orientation={'vertical'}
             />
-            {formErrors.Price.length > 0 && (<Text Style={styles.errorMessage}>{formErrors.Price}</Text>)}
+            {formErrors.Price.length > 0 && (<Text style={ styles.errorMessage }>{formErrors.Price}</Text>)}
           </View>
 
           <View style={styles.checkBoxContainer}>
@@ -260,12 +269,10 @@ export default class CreateScreen extends Component<Props>{
 }
 
 const styles = StyleSheet.create({
-
   container: {
     heigth: '70%',
     paddingHorizontal: 10,
     backgroundColor: '#EEF2FF',
-
   },
   SectionContainer: {
     height: 80,
@@ -298,7 +305,7 @@ const styles = StyleSheet.create({
   },
   errorMessage: {
     color: '#ff0000',
-    fontSize: 0.75,
+    fontSize: 15,
   },
   DescriptionTextInput: {
     fontSize: 14,

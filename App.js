@@ -78,7 +78,7 @@ class TabNavigator extends Component {
           tabBarActiveTintColor: '#1C6DD0',
           tabBarActiveBackgroundColor: '#E8F9FD',
           headerTitleStyle: {
-            fontSize: 40,
+            fontSize: 30,
             fontFamily: 'PlayfairDisplay-Bold',
           },
           headerStyle: {

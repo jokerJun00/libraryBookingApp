@@ -35,11 +35,10 @@ export default class BookListScreen extends Component {
     setInterval(() => {
       this.setState(intervalRefresh => {
         console.log("refresh main list");
-        this._query;
+        this._query();
       })
     }, 10000);
   }
-
 
 
   componentDidMount() {
@@ -134,9 +133,7 @@ export default class BookListScreen extends Component {
                   onPress={() => {
                     this.props.navigation.navigate('BookDetail', {
                       book: item,
-                      id: item.ID,
-                      headerTitle: item.Title,
-                      refresh: (this._query),
+                      refresh: this._query,
                     });
                   }}
                 >
