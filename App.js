@@ -70,7 +70,7 @@ class TabNavigator extends Component {
   render() {
     return (
       <Tab.Navigator 
-        initialRouteName={'DrawerHome'}
+        initialRouteName={'Home'}
         screenOptions={{
           tabBarActiveTintColor: '#1C6DD0',
           tabBarActiveBackgroundColor: '#E8F9FD',
@@ -85,7 +85,7 @@ class TabNavigator extends Component {
         }}
       >
         <Tab.Screen
-          name="DrawerHome"
+          name="Home"
           component={DrawerNavigator}
           options={{ 
             headerShown: false, 
